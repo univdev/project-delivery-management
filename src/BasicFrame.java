@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -19,6 +20,7 @@ public class BasicFrame extends JFrame {
 		this.add(new JLabel("test"));
 		this.add(new JLabel("test"));
 		this.add(new JLabel("test"));
+		this.add(new JButton("123"));
 	}
 
 }
