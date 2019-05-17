@@ -1,6 +1,7 @@
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class BasicFrame extends JFrame {
 
@@ -14,6 +15,8 @@ public class BasicFrame extends JFrame {
 		this.setSize(d);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		this.add(new JLabel("create-layout 브랜치 개발"));
 	}
 
 }
