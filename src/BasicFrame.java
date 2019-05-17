@@ -15,6 +15,8 @@ public class BasicFrame extends JFrame {
 		this.setSize(d);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		this.add(new JLabel("test"));
 	}
 
 }
