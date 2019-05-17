@@ -16,7 +16,9 @@ public class BasicFrame extends JFrame {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		this.add(new JLabel("create-layout ºê·£Ä¡ °³¹ß"));
+		this.add(new JLabel("create-layout ï¿½ê·£Ä¡ ï¿½ï¿½ï¿½ï¿½"));
+		
+		this.add(new JLabel("create-input ï¿½ê·£Ä¡ ï¿½ï¿½ï¿½ß»ï¿½ï¿½ï¿½"));
 	}
 
 }
