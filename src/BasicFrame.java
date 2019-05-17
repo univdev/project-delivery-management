@@ -17,6 +17,8 @@ public class BasicFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		this.add(new JLabel("test"));
+		this.add(new JLabel("test"));
+		this.add(new JLabel("test"));
 	}
 
 }
