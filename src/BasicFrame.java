@@ -15,10 +15,6 @@ public class BasicFrame extends JFrame {
 		this.setSize(d);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		this.add(new JLabel("create-layout �귣ġ ����"));
-		
-		this.add(new JLabel("create-input �귣ġ ���߻���"));
 	}
 
 }
