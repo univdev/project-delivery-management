@@ -8,6 +8,16 @@ public class MemberSchema {
 	private String company = null;
 	private String address = null;
 	
+	public MemberSchema(int idx, int grade, String account, String password, String company, String address) {
+		super();
+		this.idx = idx;
+		this.grade = grade;
+		this.account = account;
+		this.password = password;
+		this.company = company;
+		this.address = address;
+	}
+	
 	public int getIdx() {
 		return idx;
 	}
