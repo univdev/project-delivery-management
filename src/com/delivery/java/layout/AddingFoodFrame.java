@@ -1,18 +1,18 @@
 package com.delivery.java.layout;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.text.MaskFormatter;
-import javax.swing.text.NumberFormatter;
 
 public class AddingFoodFrame extends JFrame implements KeyListener, ActionListener {
 
@@ -21,11 +21,13 @@ public class AddingFoodFrame extends JFrame implements KeyListener, ActionListen
 	public JTextField FoodNameTf;
 	public JLabel lbl3;
 	public JTextField FoodPriceTf;
-	public MaskFormatter tst;
 	public JLabel lbl4;
 	public JButton OkBtn;
 	public JButton CancelBtn;
 	public int FoodPrice;
+	public DecimalFormat df;
+	public JLabel lbl5;
+	public JLabel lbl7;
 
 	public AddingFoodFrame (String title) {
 
@@ -39,6 +41,11 @@ public class AddingFoodFrame extends JFrame implements KeyListener, ActionListen
 		lbl1 = new JLabel("음식 추가");
 		lbl1.setFont(new Font("맑은 고딕", Font.BOLD, 30));
 		lbl1.setBounds(15, 15, 150, 30);
+		
+		lbl7 = new JLabel("| Adding Food");
+		lbl7.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+		lbl7.setForeground(Color.GRAY);
+		lbl7.setBounds(155, 20, 150, 30);
 
 
 		// 중단부 
@@ -66,6 +73,12 @@ public class AddingFoodFrame extends JFrame implements KeyListener, ActionListen
 		lbl4.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		lbl4.setHorizontalAlignment(JLabel.RIGHT);
 		lbl4.setBounds(265, 115, 15, 15);
+		
+		lbl5 = new JLabel("설정 가능한 가격의 범위는 (0 ~ 999,999,999) 입니다.");
+		lbl5.setFont(new Font("맑은 고딕", Font.BOLD, 10));
+		lbl5.setForeground(Color.RED);
+		lbl5.setBounds(50, 140, 300, 15);
+		lbl5.setVisible(false);
 
 
 		// 하단부 확인 / 취소 버튼
@@ -82,6 +95,7 @@ public class AddingFoodFrame extends JFrame implements KeyListener, ActionListen
 
 
 		add(lbl1);
+		add(lbl7);
 		add(lbl2);
 		add(FoodNameTf);
 		add(lbl3);
@@ -89,6 +103,7 @@ public class AddingFoodFrame extends JFrame implements KeyListener, ActionListen
 		add(lbl4);
 		add(OkBtn);
 		add(CancelBtn);
+		add(lbl5);
 
 		setVisible(true);
 
@@ -107,52 +122,72 @@ public class AddingFoodFrame extends JFrame implements KeyListener, ActionListen
 		if(!Character.isDigit(c)) {
 			e.consume();
 		}
+		
+		// 9자리를 초과하여 입력 시 더이상 입력 불가, lbl visible(true)
+		if(((JTextField)e.getSource()).getText().length() >= 9) {
+			e.consume();
+			lbl5.setVisible(true);
+		}
+		
+		if(((JTextField)e.getSource()).getText().length() < 9) {
+			lbl5.setVisible(false);
+		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
-		
+
 		if (obj == OkBtn) {
-			
-			if((JOptionPane.showConfirmDialog(null,
-					"음식명 : " + FoodNameTf.getText() + ", \n" +
-					"가격 : " + FoodPriceTf.getText() + " 원 \n" +
-					"위 입력사항이 맞습니까?",
-					"음식 추가", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-					
-					== JOptionPane.YES_OPTION)) {
-				// Dialog에서 'Yes' 버튼을 눌렀을 때
+			if(!FoodNameTf.getText().equals("") && !FoodPriceTf.getText().equals("")) {	// 음식명, 가격 != null
+				
 				// INSERT문을 통해 FoodPrice (int) 값을 전달하기 위한 Cast
 				FoodPrice = Integer.parseInt(FoodPriceTf.getText());
-				// 여기에 INSERT문(DB) 추가
 
+				df = new DecimalFormat("###,###");
 				
-				
-			} else {
-				// Dialog에서 'No' 버튼을 눌렀을 때
-				
+				if((JOptionPane.showConfirmDialog(null,
+						"음식명 : " + FoodNameTf.getText() + ", \n" +
+								"가격 : " + df.format(FoodPrice) + " 원 \n" +
+								"위 입력사항이 맞습니까?",
+								"음식 추가", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+
+						== JOptionPane.YES_OPTION)) {
+					// Dialog에서 'Yes' 버튼을 눌렀을 때
+					// 여기에 INSERT문(DB) 추가
+
+
+
+				} else {
+					// Dialog에서 'No' 버튼을 눌렀을 때
+
+				} 
+
+			} else if (FoodNameTf.getText().equals("") && !FoodPriceTf.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "음식명을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
+			} else if (!FoodNameTf.getText().equals("") && FoodPriceTf.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "가격을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
+			} else if (FoodNameTf.getText().equals("") && FoodPriceTf.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "음식명, 가격을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
 			}
-			
+
 		} else if (obj == CancelBtn) {
-			
+
 			dispose();
-			
+
 		}
-		
-		
+
+
 	}
 
 }
