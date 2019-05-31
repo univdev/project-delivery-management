@@ -1,19 +1,20 @@
 package com.delivery.java.layout;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.text.NumberFormat;
 
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
-public class AddingFoodFrame extends JFrame implements KeyListener {
+public class AddingFoodFrame extends JFrame implements KeyListener, ActionListener {
 
 	public JLabel lbl1;
 	public JLabel lbl2;
@@ -24,6 +25,7 @@ public class AddingFoodFrame extends JFrame implements KeyListener {
 	public JLabel lbl4;
 	public JButton OkBtn;
 	public JButton CancelBtn;
+	public int FoodPrice;
 
 	public AddingFoodFrame (String title) {
 
@@ -70,10 +72,12 @@ public class AddingFoodFrame extends JFrame implements KeyListener {
 		OkBtn = new JButton("확인");
 		OkBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		OkBtn.setBounds(70, 165, 80, 35);
+		OkBtn.addActionListener(this);
 
 		CancelBtn = new JButton("취소");
 		CancelBtn.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		CancelBtn.setBounds(190, 165, 80, 35);
+		CancelBtn.addActionListener(this);
 
 
 
@@ -115,6 +119,40 @@ public class AddingFoodFrame extends JFrame implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+		
+		if (obj == OkBtn) {
+			
+			if((JOptionPane.showConfirmDialog(null,
+					"음식명 : " + FoodNameTf.getText() + ", \n" +
+					"가격 : " + FoodPriceTf.getText() + " 원 \n" +
+					"위 입력사항이 맞습니까?",
+					"음식 추가", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+					
+					== JOptionPane.YES_OPTION)) {
+				// Dialog에서 'Yes' 버튼을 눌렀을 때
+				// INSERT문을 통해 FoodPrice (int) 값을 전달하기 위한 Cast
+				FoodPrice = Integer.parseInt(FoodPriceTf.getText());
+				// 여기에 INSERT문(DB) 추가
+
+				
+				
+			} else {
+				// Dialog에서 'No' 버튼을 눌렀을 때
+				
+			}
+			
+		} else if (obj == CancelBtn) {
+			
+			dispose();
+			
+		}
+		
+		
 	}
 
 }
