@@ -12,6 +12,7 @@ import javax.swing.JRadioButton;
 
 public class PaymentUIFrame extends JFrame {
 	
+	// 결제 Radio
 	public JRadioButton cashRadio = null;
 	public JRadioButton cardRadio = null;
 	public JRadioButton kakaoRadio = null;
