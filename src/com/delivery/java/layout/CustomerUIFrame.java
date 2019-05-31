@@ -21,6 +21,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import com.delivery.java.db.schema.FoodSchema;
+import com.delivery.java.notification.NotificationManager;
 
 public class CustomerUIFrame extends JFrame {
 	
@@ -68,6 +69,8 @@ public class CustomerUIFrame extends JFrame {
 				// TODO Auto-generated method stub
 				ButtonModel model = paymentFrame.group.getSelection();
 				paymentFrame.visible(false);
+				
+				NotificationManager.push("주문이 완료되었습니다.", "사장님이 확인하실 때 까지 기다리는 중입니다.");
 			}
 		});
 		
