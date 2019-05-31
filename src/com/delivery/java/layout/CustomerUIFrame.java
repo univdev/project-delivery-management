@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
@@ -68,6 +69,11 @@ public class CustomerUIFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ButtonModel model = paymentFrame.group.getSelection();
+				if (model == null) {
+					JOptionPane.showMessageDialog(null, "결제 수단을 입력해주세요.");
+					return;
+				}
+				String actionCommand = model.getActionCommand();
 				paymentFrame.visible(false);
 				
 				NotificationManager.push("주문이 완료되었습니다.", "사장님이 확인하실 때 까지 기다리는 중입니다.");
