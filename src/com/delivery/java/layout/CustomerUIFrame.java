@@ -6,8 +6,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,12 +29,18 @@ public class CustomerUIFrame extends JFrame {
 	private JList<FoodSchema> selectedFoodList = null;
 	private JLabel priceLabel = null;
 	private int price = 0;
+	private PaymentUIFrame paymentFrame = null;
+	
+	public static void main(String args[]) {
+		new CustomerUIFrame("", new Dimension(600, 250));
+	}
+	
+	/* 600 x 250 */
 	
 	public CustomerUIFrame(String title, Dimension d) {
 		this.setTitle(title);
 		this.setSize(d);
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -47,12 +56,34 @@ public class CustomerUIFrame extends JFrame {
 		priceLabel = new JLabel("");
 		this.setPriceLabel(price);
 		
+		/*
+		 * 지불 방식 관련 설정
+		 * TODO: paymentFrame을 통해서 선택된 결제방식을 갖고온다.
+		 */
+		paymentFrame = new PaymentUIFrame("지불 방식", new Dimension(400, 160));
+		paymentFrame.addConfirmEvent(new ActionListener() {
+			// 결제 관련 로직을 아래에 작성
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ButtonModel model = paymentFrame.group.getSelection();
+				paymentFrame.visible(false);
+			}
+		});
+		
 		JButton confirmButton = new JButton("결제");
+		confirmButton.addActionListener(new ActionListener() {
+			// 결제 취소 관련 로직을 아래에 작성
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				paymentFrame.visible(true);
+			}
+		});
 		
 		JPanel leftPanel = new JPanel();
 		JLabel foodListLabel = new JLabel("음식 리스트");
 		foodListLabel.setHorizontalAlignment(JLabel.LEFT);
-//		leftPanel.setBackground(Color.RED);
 		leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		leftPanel.add(foodListLabel);
 		leftPanel.add(foodListPane);
@@ -61,12 +92,10 @@ public class CustomerUIFrame extends JFrame {
 		JPanel rightPanel = new JPanel();
 		JLabel selectedFoodListLabel = new JLabel("선택 리스트");
 		selectedFoodListLabel.setHorizontalAlignment(JLabel.LEFT);
-//		rightPanel.setBackground(Color.GREEN);
 		rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		rightPanel.add(selectedFoodListLabel);
 		rightPanel.add(selectedFoodListPane);
 		rightPanel.add(confirmButton);
-//		rightPanel.add();
 		
 		gridPanel.add(leftPanel);
 		gridPanel.add(rightPanel);

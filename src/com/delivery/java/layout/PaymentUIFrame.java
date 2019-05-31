@@ -1,6 +1,8 @@
 package com.delivery.java.layout;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -12,21 +14,21 @@ import javax.swing.JRadioButton;
 
 public class PaymentUIFrame extends JFrame {
 	
+	// 결제 Radio
 	public JRadioButton cashRadio = null;
 	public JRadioButton cardRadio = null;
 	public JRadioButton kakaoRadio = null;
 	public JRadioButton pointRadio = null;
 	public ButtonGroup group = null;
 	
-	public static void main(String args[]) {
-		new PaymentUIFrame("결제 방식 선택", new Dimension(400, 160));
-	}
+	public JButton confirmButton = null;
+	public JButton denyButton = null;
+	
+	/* 400 x 160 */
 
 	public PaymentUIFrame(String title, Dimension d) {
 		this.setTitle(title);
 		this.setSize(d);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
 		this.setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
@@ -55,8 +57,16 @@ public class PaymentUIFrame extends JFrame {
 		
 		panel.add(paymentPanel);
 		
-		JButton confirmButton = new JButton("최종 결정");
-		JButton denyButton = new JButton("뒤로가기");
+		confirmButton = new JButton("최종 결정");
+		denyButton = new JButton("뒤로가기");
+		denyButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				setVisible(false);
+			}
+		});
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.add(confirmButton);
@@ -65,5 +75,17 @@ public class PaymentUIFrame extends JFrame {
 		panel.add(buttonPanel);
 		
 		this.add(panel);
+	}
+	
+	public void addConfirmEvent(ActionListener listener) {
+		confirmButton.addActionListener(listener);
+	}
+	
+	public void addDenyEvent(ActionListener listener) {
+		denyButton.addActionListener(listener);
+	}
+	
+	public void visible(boolean flag) {
+		this.setVisible(flag);
 	}
 }
