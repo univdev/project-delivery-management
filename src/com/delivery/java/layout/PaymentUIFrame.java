@@ -38,9 +38,13 @@ public class PaymentUIFrame extends JFrame {
 		panel.add(label);
 		
 		cashRadio = new JRadioButton("현금 결제");
+		cashRadio.setActionCommand("cash");
 		cardRadio = new JRadioButton("카드 결제");
+		cardRadio.setActionCommand("card");
 		kakaoRadio = new JRadioButton("카카오페이");
+		kakaoRadio.setActionCommand("kakao");
 		pointRadio = new JRadioButton("포인트 결제");
+		pointRadio.setActionCommand("point");
 		group = new ButtonGroup();
 		
 		JPanel paymentPanel = new JPanel();
