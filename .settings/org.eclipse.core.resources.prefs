@@ -1,11 +1,10 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=StoreList
 eclipse.preferences.version=1
 encoding//src/com/delivery/java/db/schema/FoodSchema.java=UTF-8
 encoding//src/com/delivery/java/db/schema/OrderSchema.java=UTF-8
 encoding//src/com/delivery/java/layout/CustomerUIFrame.java=UTF-8
-encoding//src/com/delivery/java/layout/MainFrame.java=UTF-8
 encoding//src/com/delivery/java/layout/PaymentUIFrame.java=UTF-8
-<<<<<<< HEAD
-encoding/<project>=UTF-8
-=======
 encoding//src/com/delivery/java/layout/StoreList.java=UTF-8
->>>>>>> StoreList
+encoding/<project>=UTF-8
