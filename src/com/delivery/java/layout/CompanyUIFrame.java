@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableColumnModel;
 
 import com.delivery.java.db.schema.FoodSchema;
 import com.delivery.java.notification.NotificationManager;
@@ -30,14 +31,14 @@ public class CompanyUIFrame extends JFrame {
 	
 	private JPanel gridPanel = null;
 	private JList<FoodSchema> foodList = null;
-	private JList<FoodSchema> selectedFoodList = null;
 	private JLabel priceLabel = null;
 	private int price = 0;
 	private PaymentUIFrame paymentFrame = null;
 	private JComboBox<Integer> durationCombobox = null;
+	private JTable orderListTable;
 	
 	public static void main(String args[]) {
-		new CompanyUIFrame("", new Dimension(600, 500));
+		new CompanyUIFrame("", new Dimension(600, 270));
 	}
 	
 	/* 600 x 250 */
@@ -51,9 +52,7 @@ public class CompanyUIFrame extends JFrame {
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		foodList = new JList<FoodSchema>();
-		selectedFoodList = new JList<FoodSchema>();
 		JScrollPane foodListPane = new JScrollPane(foodList);
-		JScrollPane selectedFoodListPane = new JScrollPane(selectedFoodList);
 		
 		gridPanel = new JPanel();
 		gridPanel.setLayout(new GridLayout(1, 2, 10, 10));
@@ -123,10 +122,19 @@ public class CompanyUIFrame extends JFrame {
 	private JScrollPane orderListTable() {
 		String columnNames[] = { "번호", "주문자", "내역", "할 말" };
 		Object data[][] = { { 1, "주문자", "내역", "할 말" }, { 1, "주문자", "내역", "할 말" } };
-		JTable table = new JTable(data, columnNames);
-		table.setMinimumSize(new Dimension(150, 250));
-		table.setRowSelectionAllowed(true);
-		JScrollPane pane = new JScrollPane(table);
+		orderListTable = new JTable(data, columnNames);
+		TableColumnModel columns = orderListTable.getColumnModel();
+		
+		orderListTable.setMinimumSize(new Dimension(150, 250));
+		orderListTable.setRowHeight(20);
+		columns.getColumn(0).setPreferredWidth(50);
+		columns.getColumn(1).setPreferredWidth(50);
+		columns.getColumn(2).setPreferredWidth(50);
+		columns.getColumn(3).setPreferredWidth(50);
+		
+		orderListTable.setRowSelectionAllowed(true);
+		JScrollPane pane = new JScrollPane(orderListTable);
+		pane.setPreferredSize(new Dimension(250, 130));
 		
 		return pane;
 	}
@@ -141,6 +149,18 @@ public class CompanyUIFrame extends JFrame {
 		}
 		
 		JButton confirmButton = new JButton("주문 수락");
+		confirmButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int index = orderListTable.getSelectedRow();
+				if (index < 0) {
+					JOptionPane.showMessageDialog(null, "주문을 선택해주세요.");
+					return;
+				}
+			}
+		});
 		panel.add(confirmButton);
 		
 		return panel;
