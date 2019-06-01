@@ -2,15 +2,18 @@ package com.delivery.java.layout;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class CompanySignupFrame extends JFrame {
+public class CompanySignupFrame extends JFrame implements ActionListener{
 	public JLabel label;
 	public JLabel IDlabel;
 	public JLabel PWlabel;
@@ -33,9 +36,9 @@ public class CompanySignupFrame extends JFrame {
 	public JCheckBox Point;
 	public JCheckBox Kakao;
 	
-	public CompanySignupFrame(String title, Dimension d) {
+	public CompanySignupFrame(String title) {
 		this.setTitle(title);
-		this.setSize(d);
+		this.setSize(400,850);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
@@ -123,6 +126,7 @@ public class CompanySignupFrame extends JFrame {
 		SignupButton = new JButton("가입하기");
 		SignupButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		SignupButton.setBounds(30, 745, 150, 35);
+		SignupButton.addActionListener(this);
 		
 		
 		add(label);
@@ -152,8 +156,20 @@ public class CompanySignupFrame extends JFrame {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new CompanySignupFrame("사장 회원가입", new Dimension(400, 850));
+		new CompanySignupFrame("사장 회원가입");
 
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+		
+		if(obj == SignupButton) {
+			this.setVisible(false);
+			JOptionPane.showMessageDialog(null, "가입이 완료되었습니다!");
+			new MainFrame("배달의 백성");
+			
+		}
+		
 	}
 
 }

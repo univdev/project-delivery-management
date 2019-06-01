@@ -19,9 +19,9 @@ public class LoginFrame extends JFrame {
 	public JLabel IDlabel;
 	public JLabel PWlabel;
 	
-	public LoginFrame(String title, Dimension d) {
+	public LoginFrame(String title) {
 		this.setTitle(title);
-		this.setSize(d);
+		this.setSize(400,350);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
@@ -63,7 +63,7 @@ public class LoginFrame extends JFrame {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new LoginFrame("로그인", new Dimension(400,350));
+		new LoginFrame("로그인");
 
 	}
 
