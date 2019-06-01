@@ -31,6 +31,7 @@ public class DB {
 		}
 	}
 	
+	// 쿼리만 날리는 함수
 	public int mq(String q) {
 		try {
 			return state.executeUpdate(q);
@@ -41,6 +42,7 @@ public class DB {
 		return 0;
 	}
 	
+	// 쿼리를 날리고 데이터를 받아오는 함수
 	public ResultSet mfs(String q) {
 		try {
 			return state.executeQuery(q);
@@ -51,6 +53,7 @@ public class DB {
 		return null;
 	}
 	
+	// 쿼리를 보내고, 해당 쿼리로 인해서 받아온 데이터의 갯수를 리턴하는 함수
 	public int mn(String q) {
 		ResultSet rs = this.mfs(q);
 		try {
