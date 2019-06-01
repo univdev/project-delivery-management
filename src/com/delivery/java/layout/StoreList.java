@@ -6,27 +6,32 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import com.delivery.java.db.schema.CompanySchema;
 
 public class StoreList extends JFrame{
-	public JList<String> list = null;
+	public JList<CompanySchema> list = null;
 	
 	public StoreList()
 	{
-		setTitle("¾÷¼Ò¸ñ·Ï¸®½ºÆ®");
+		setTitle("Â¾Ã·Â¼Ã’Â¸Ã±Â·ÃÂ¸Â®Â½ÂºÃ†Â®");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(250,400);
 		setLocation(400,300);
 		
-		JPanel jp = new JPanel();
-		jp.setLayout(null);
-		JLabel jl = new JLabel("¾÷¼Ò¸ñ·Ï");
-		JButton btn = new JButton("ÀÌµ¿");
-		btn.addActionListener(new ActionListener() {
+		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		panel.setLayout(new BorderLayout());
+		JLabel label = new JLabel("ì—…ì†Œ ëª©ë¡");
+		JButton selectButton = new JButton("ì…ì¥");
+		selectButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -34,16 +39,16 @@ public class StoreList extends JFrame{
 				
 			}
 		});
-		jl.setHorizontalAlignment(JLabel.CENTER);
-		list = new JList<String>();
-		jl.setBounds(67, 30, 100, 30);
-		list.setBounds(67, 80, 100, 160);
-		btn.setBounds(67, 275, 100, 40);
-		jp.add(jl);
+		label.setHorizontalAlignment(JLabel.CENTER);
 		
-		jp.add(list);
-		jp.add(btn);
-		add(jp);
+		list = new JList<CompanySchema>();
+		
+		JScrollPane pane = new JScrollPane(list);
+		
+		panel.add(label, BorderLayout.NORTH);
+		panel.add(pane, BorderLayout.CENTER);
+		panel.add(selectButton, BorderLayout.SOUTH);
+		add(panel);
 		
 		setVisible(true);
 	}
