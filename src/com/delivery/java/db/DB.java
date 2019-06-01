@@ -15,6 +15,7 @@ public class DB {
 	private String password = "hr";
 
 	public DB() {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
 		try {
 			conn = DriverManager.getConnection(url, user, password);
 			state = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
