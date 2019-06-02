@@ -115,8 +115,6 @@ public class CompanyUIFrame extends JFrame {
 		gridPanel.add(rightPanel);
 		
 		this.add(gridPanel);
-		
-		this.setVisible(true);
 	}
 	
 	private JScrollPane orderListTable() {

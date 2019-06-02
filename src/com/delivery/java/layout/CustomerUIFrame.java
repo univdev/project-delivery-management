@@ -90,6 +90,18 @@ public class CustomerUIFrame extends JFrame {
 			}
 		});
 		
+		OrderViewFrame orderListFrame = new OrderViewFrame("주문 내역", new Dimension(550, 450));
+		
+		JButton orderCheckButton = new JButton("나의 주문 확인");
+		orderCheckButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				orderListFrame.visible(true);
+			}
+		});
+		
 		JPanel leftPanel = new JPanel();
 		JLabel foodListLabel = new JLabel("음식 리스트");
 		foodListLabel.setHorizontalAlignment(JLabel.LEFT);
@@ -105,6 +117,7 @@ public class CustomerUIFrame extends JFrame {
 		rightPanel.add(selectedFoodListLabel);
 		rightPanel.add(selectedFoodListPane);
 		rightPanel.add(confirmButton);
+		rightPanel.add(orderCheckButton);
 		
 		gridPanel.add(leftPanel);
 		gridPanel.add(rightPanel);

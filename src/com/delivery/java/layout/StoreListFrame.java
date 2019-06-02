@@ -16,12 +16,12 @@ import javax.swing.JScrollPane;
 
 import com.delivery.java.db.schema.CompanySchema;
 
-public class StoreList extends JFrame{
+public class StoreListFrame extends JFrame{
 	public JList<CompanySchema> list = null;
 	
-	public StoreList()
+	public StoreListFrame()
 	{
-		setTitle("¾÷¼Ò¸ñ·Ï¸®½ºÆ®");
+		setTitle("업소 목록");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(250,400);
 		setLocation(400,300);
@@ -29,7 +29,18 @@ public class StoreList extends JFrame{
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panel.setLayout(new BorderLayout());
+		
 		JLabel label = new JLabel("업소 목록");
+		label.setHorizontalAlignment(JLabel.CENTER);
+		
+		JPanel titlePanel = new JPanel();
+		titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+		titlePanel.add(label);
+		panel.add(titlePanel, BorderLayout.NORTH);
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+		
 		JButton selectButton = new JButton("입장");
 		selectButton.addActionListener(new ActionListener() {
 			
@@ -39,22 +50,22 @@ public class StoreList extends JFrame{
 				
 			}
 		});
-		label.setHorizontalAlignment(JLabel.CENTER);
+		
+		buttonPanel.add(selectButton);
+		panel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		list = new JList<CompanySchema>();
 		
 		JScrollPane pane = new JScrollPane(list);
-		
-		panel.add(label, BorderLayout.NORTH);
 		panel.add(pane, BorderLayout.CENTER);
-		panel.add(selectButton, BorderLayout.SOUTH);
-		add(panel);
+		
+		this.add(panel);
 		
 		setVisible(true);
 	}
 	
 	public static void main(String [] args)
 	{
-		new StoreList();
+		new StoreListFrame();
 	}
 }
