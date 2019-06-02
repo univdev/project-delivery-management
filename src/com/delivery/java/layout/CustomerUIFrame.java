@@ -34,14 +34,14 @@ public class CustomerUIFrame extends JFrame {
 	private PaymentUIFrame paymentFrame = null;
 	
 	public static void main(String args[]) {
-		new CustomerUIFrame("", new Dimension(600, 250));
+		new CustomerUIFrame("");
 	}
 	
 	/* 600 x 250 */
 	
-	public CustomerUIFrame(String title, Dimension d) {
+	public CustomerUIFrame(String title) {
 		this.setTitle(title);
-		this.setSize(d);
+		this.setSize(new Dimension(600, 250));
 		this.setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
@@ -129,5 +129,9 @@ public class CustomerUIFrame extends JFrame {
 	
 	private void setPriceLabel(int price) {
 		priceLabel.setText(String.format("총 금액: %d원", price));
+	}
+	
+	public void visible(boolean flag) {
+		this.setVisible(flag);
 	}
 }

@@ -2,6 +2,8 @@ package com.delivery.java.layout;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +20,11 @@ public class LoginFrame extends JFrame {
 	public JButton SignupButton;
 	public JLabel IDlabel;
 	public JLabel PWlabel;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new LoginFrame("로그인");
+	}
 	
 	public LoginFrame(String title) {
 		this.setTitle(title);
@@ -47,6 +54,14 @@ public class LoginFrame extends JFrame {
 		PasswordTextField.setBounds(30, 185, 300, 30);
 		
 		LoginButton = new JButton("로그인");
+		LoginButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				submit();
+			}
+		});
 		LoginButton.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		LoginButton.setBounds(30, 250, 140, 35);
 		
@@ -60,11 +75,23 @@ public class LoginFrame extends JFrame {
 		
 		this.setVisible(true);
 	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new LoginFrame("로그인");
-
+	
+	private void submit() {
+		String grade = "company";
+		StoreListFrame customerFrame = new StoreListFrame();
+		CompanyUIFrame companyFrame = new CompanyUIFrame("업체 관리");
+		
+		this.visible(false);
+		
+		if (grade.equals("customer")) {
+			customerFrame.visible(true);
+		} else {
+			companyFrame.visible(true);
+		}
+	}
+	
+	public void visible(boolean flag) {
+		this.setVisible(flag);
 	}
 
 }
