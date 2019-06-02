@@ -38,14 +38,14 @@ public class CompanyUIFrame extends JFrame {
 	private JTable orderListTable;
 	
 	public static void main(String args[]) {
-		new CompanyUIFrame("", new Dimension(600, 270));
+		new CompanyUIFrame("");
 	}
 	
 	/* 600 x 250 */
 	
-	public CompanyUIFrame(String title, Dimension d) {
+	public CompanyUIFrame(String title) {
 		this.setTitle(title);
-		this.setSize(d);
+		this.setSize(new Dimension(600, 270));
 		this.setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
@@ -166,5 +166,9 @@ public class CompanyUIFrame extends JFrame {
 	
 	private void setPriceLabel(int price) {
 		priceLabel.setText(String.format("총 금액: %d원", price));
+	}
+	
+	public void visible(boolean flag) {
+		this.setVisible(flag);
 	}
 }

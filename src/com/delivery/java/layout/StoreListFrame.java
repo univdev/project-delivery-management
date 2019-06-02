@@ -19,6 +19,11 @@ import com.delivery.java.db.schema.CompanySchema;
 public class StoreListFrame extends JFrame{
 	public JList<CompanySchema> list = null;
 	
+	public static void main(String [] args)
+	{
+		new StoreListFrame();
+	}
+	
 	public StoreListFrame()
 	{
 		setTitle("업소 목록");
@@ -47,7 +52,7 @@ public class StoreListFrame extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				join();
 			}
 		});
 		
@@ -60,12 +65,14 @@ public class StoreListFrame extends JFrame{
 		panel.add(pane, BorderLayout.CENTER);
 		
 		this.add(panel);
-		
-		setVisible(true);
 	}
 	
-	public static void main(String [] args)
-	{
-		new StoreListFrame();
+	private void join() {
+		CustomerUIFrame customerFrame = new CustomerUIFrame("고객 UI");
+		customerFrame.visible(true);
+	}
+	
+	public void visible(boolean flag) {
+		this.setVisible(flag);
 	}
 }
