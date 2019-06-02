@@ -25,7 +25,6 @@ public class OrderViewFrame extends JFrame {
 	public OrderViewFrame(String title, Dimension d) {
 		this.setTitle(title);
 		this.setSize(d);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
@@ -61,8 +60,6 @@ public class OrderViewFrame extends JFrame {
 		panel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		this.add(panel);
-		
-		this.setVisible(true);
 	}
 	
 	public void visible(boolean flag) {
