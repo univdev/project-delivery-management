@@ -19,7 +19,7 @@ public class OrderViewFrame extends JFrame {
 	public JButton returnButton;
 	
 	public static void main(String args[]) {
-		new OrderViewFrame("주문 내역", new Dimension(350, 450));
+		new OrderViewFrame("주문 내역", new Dimension(550, 450));
 	}
 	
 	public OrderViewFrame(String title, Dimension d) {
@@ -42,8 +42,8 @@ public class OrderViewFrame extends JFrame {
 		titlePanel.add(labelTitle);
 		panel.add(titlePanel, BorderLayout.NORTH);
 		
-		String columnNames[] = { "번호", "업체", "음식", "배송 여부" };
-		Object data[][] = { { 1, "교촌치킨", "간장치킨, 양념치킨", "배송 중" }, { 2, "본죽", "전복죽", "배송 중" } };
+		String columnNames[] = { "번호", "업체", "음식", "배송 여부", "도착 예정시간" };
+		Object data[][] = { { 1, "교촌치킨", "간장치킨, 양념치킨", "배송 중", "20분" }, { 2, "본죽", "전복죽", "배송 중", "30분" } };
 		
 		table = new JTable(data, columnNames);
 		table.setRowSelectionAllowed(true);
