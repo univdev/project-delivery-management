@@ -1,13 +1,19 @@
 package com.delivery.java.layout;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import com.delivery.java.db.DB;
+import com.delivery.java.encrypt.Encrypt;
 
 public class MainFrame extends JFrame implements ActionListener{
 	
@@ -93,8 +99,72 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		else if(obj == CompanySignupButton) {
 			this.setVisible(false);
-			new CompanySignupFrame("사장 회원가입");
-			
+			CompanySignupFrame signup = new CompanySignupFrame("사장 회원가입");
+			signup.SignupButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					DB db = new DB();
+					
+					int grade = 2;
+					String account = signup.IDTextField.getText();
+					String password = signup.PWTextField.getText();
+					String passwordConfirm = signup.PWRTextField.getText();
+					String address = signup.AddressTextField.getText();
+					String company = signup.CompanyTextField.getText();
+					String phone = signup.PhoneNumburTextField.getText();
+					ArrayList<String> methods = new ArrayList<String>();
+					
+					if (signup.Card.isSelected()) methods.add(signup.Card.getActionCommand());
+					if (signup.Cash.isSelected()) methods.add(signup.Cash.getActionCommand());
+					if (signup.Kakao.isSelected()) methods.add(signup.Kakao.getActionCommand());
+					if (signup.Point.isSelected()) methods.add(signup.Point.getActionCommand());
+					
+					String methodsString = String.join(",", methods);
+					
+					System.out.println(methodsString);
+					
+					int point = 0;
+					
+					if (account.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "아이디를 입력해주세요");
+						return;
+					}
+					
+					if (!password.equals(passwordConfirm)) {
+						JOptionPane.showMessageDialog(null, "비밀번호를 다시 입력해주세요.");
+						return;
+					}
+					
+					if (address.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "주소를 입력해주세요.");
+						return;
+					}
+					
+					if (company.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "회사명을 입력해주세요.");
+						return;
+					}
+					
+					password = Encrypt.SHA256(password);
+					
+					String accountSQL = String.format("INSERT INTO ACCOUNTS"
+							+ " (idx_a, grade, account, password, address, company, phone, point)"
+							+ " VALUES (sq_a.NEXTVAL, '%d', '%s', '%s', '%s', '%s', '%s', '%d')", grade, account, password, address, company, phone, point);
+					
+					String storeSQL = String.format("INSERT INTO STORES"
+							+ " (idx_s, idx_a, name, methods)"
+							+ " VALUES (sq_s.NEXTVAL, sq_a.CURRVAL, '%s', '%s')", company, methodsString);
+					
+					db.mq(accountSQL);
+					db.mq(storeSQL);
+					
+					JOptionPane.showMessageDialog(null, "가입이 완료되었습니다!");
+					
+					signup.setVisible(false);
+				}
+			});
 		}
 		
 	}
