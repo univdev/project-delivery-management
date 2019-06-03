@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -13,7 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class CompanySignupFrame extends JFrame implements ActionListener{
+import com.delivery.java.db.DB;
+
+import oracle.net.jdbc.TNSAddress.Address;
+
+public class CompanySignupFrame extends JFrame{
 	public JLabel label;
 	public JLabel IDlabel;
 	public JLabel PWlabel;
@@ -31,6 +36,7 @@ public class CompanySignupFrame extends JFrame implements ActionListener{
 	public JLabel Companylabel;
 	public JTextField CompanyTextField;
 	public JLabel Paymentlabel;
+	
 	public JCheckBox Cash;
 	public JCheckBox Card;
 	public JCheckBox Point;
@@ -110,24 +116,26 @@ public class CompanySignupFrame extends JFrame implements ActionListener{
 		Cash = new JCheckBox("현금");
 		Cash.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		Cash.setBounds(30, 638, 100, 35);
+		Cash.setActionCommand("Cash");
 		
 		Card = new JCheckBox("카드");
 		Card.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		Card.setBounds(180, 638, 100, 35);
+		Card.setActionCommand("Card");
 		
 		Point = new JCheckBox("포인트");
 		Point.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		Point.setBounds(30, 671, 100, 35);
+		Point.setActionCommand("Point");
 		
 		Kakao = new JCheckBox("카카오페이");
 		Kakao.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		Kakao.setBounds(180, 671, 100, 35);
+		Kakao.setActionCommand("Kakao");
 		
 		SignupButton = new JButton("가입하기");
 		SignupButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		SignupButton.setBounds(30, 745, 150, 35);
-		SignupButton.addActionListener(this);
-		
 		
 		add(label);
 		add(IDlabel);
@@ -158,18 +166,6 @@ public class CompanySignupFrame extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		new CompanySignupFrame("사장 회원가입");
 
-	}
-	
-	public void actionPerformed(ActionEvent e) {
-		Object obj = e.getSource();
-		
-		if(obj == SignupButton) {
-			this.setVisible(false);
-			JOptionPane.showMessageDialog(null, "가입이 완료되었습니다!");
-			new MainFrame("배달의 백성");
-			
-		}
-		
 	}
 
 }
