@@ -54,14 +54,6 @@ public class LoginFrame extends JFrame {
 		PasswordTextField.setBounds(30, 185, 300, 30);
 		
 		LoginButton = new JButton("로그인");
-		LoginButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				submit();
-			}
-		});
 		LoginButton.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		LoginButton.setBounds(30, 250, 140, 35);
 		
@@ -74,20 +66,6 @@ public class LoginFrame extends JFrame {
 		
 		
 		this.setVisible(true);
-	}
-	
-	private void submit() {
-		String grade = "company";
-		StoreListFrame customerFrame = new StoreListFrame();
-		CompanyUIFrame companyFrame = new CompanyUIFrame("업체 관리");
-		
-		this.visible(false);
-		
-		if (grade.equals("customer")) {
-			customerFrame.visible(true);
-		} else {
-			companyFrame.visible(true);
-		}
 	}
 	
 	public void visible(boolean flag) {
