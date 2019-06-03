@@ -3,6 +3,8 @@ package com.delivery.java.layout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -87,7 +89,54 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		if(obj == LoginButton) {
 			this.setVisible(false);
-			new LoginFrame("로그인");
+			LoginFrame login = new LoginFrame("로그인");
+			
+			login.setVisible(true);
+			
+			login.LoginButton.addActionListener(new ActionListener() {
+				
+				StoreListFrame customerFrame = new StoreListFrame();
+				CompanyUIFrame companyFrame = new CompanyUIFrame("업체 관리");
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					DB db = new DB();
+					
+					String account = login.LoginTextField.getText();
+					String password = Encrypt.SHA256(login.PasswordTextField.getText());
+					
+					System.out.println(account);
+					System.out.println(password);
+					
+					String sql = String.format("SELECT * FROM ACCOUNTS WHERE ACCOUNT='%s' AND PASSWORD='%s'", account, password);
+					int count = db.mn(sql);
+					
+					if (count <= 0) {
+						JOptionPane.showMessageDialog(null, "일치하는 계정이 없습니다.");
+						return;
+					}
+					
+					int grade = 0;
+					
+					try {
+						ResultSet rs = db.mfs(sql);
+						rs.first();
+						grade = rs.getInt("grade");
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					if (grade == 1) {
+						customerFrame.visible(true);
+					} else if (grade == 2) {
+						companyFrame.visible(true);
+					}
+					
+					login.setVisible(false);
+				}
+			});
 			
 		}
 		
