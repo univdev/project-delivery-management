@@ -93,8 +93,54 @@ public class MainFrame extends JFrame implements ActionListener{
 		
 		else if(obj == CustomerSignupButton) {
 			this.setVisible(false);
-			new CustomerSignupFrame("고객 회원가입");
+			CustomerSignupFrame signup = new CustomerSignupFrame("고객 회원가입");
 			
+			signup.SignupButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					DB db = new DB();
+					
+					int grade = 1;
+					String account = signup.IDTextField.getText();
+					String password = signup.PWTextField.getText();
+					String passwordConfirm = signup.PWRTextField.getText();
+					String address = signup.AddressTextField.getText();
+					String phone = signup.PhoneNumburTextField.getText();
+					
+					int point = 0;
+					
+					if (account.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "아이디를 입력해주세요");
+						return;
+					}
+					
+					if (!password.equals(passwordConfirm)) {
+						JOptionPane.showMessageDialog(null, "비밀번호를 다시 입력해주세요.");
+						return;
+					}
+					
+					if (address.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "주소를 입력해주세요.");
+						return;
+					}
+					
+					password = Encrypt.SHA256(password);
+					
+					String accountSQL = String.format("INSERT INTO ACCOUNTS"
+							+ " (idx_a, grade, account, password, address, phone, point)"
+							+ " VALUES (sq_a.NEXTVAL, '%d', '%s', '%s', '%s', '%s', '%d')", grade, account, password, address, phone, point);
+					
+					db.mq(accountSQL);
+					
+					JOptionPane.showMessageDialog(null, "가입이 완료되었습니다!");
+					
+					signup.setVisible(false);
+					
+					setVisible(true);
+				}
+			});
 		}
 		
 		else if(obj == CompanySignupButton) {
@@ -122,8 +168,6 @@ public class MainFrame extends JFrame implements ActionListener{
 					if (signup.Point.isSelected()) methods.add(signup.Point.getActionCommand());
 					
 					String methodsString = String.join(",", methods);
-					
-					System.out.println(methodsString);
 					
 					int point = 0;
 					
@@ -163,6 +207,8 @@ public class MainFrame extends JFrame implements ActionListener{
 					JOptionPane.showMessageDialog(null, "가입이 완료되었습니다!");
 					
 					signup.setVisible(false);
+					
+					setVisible(true);
 				}
 			});
 		}
