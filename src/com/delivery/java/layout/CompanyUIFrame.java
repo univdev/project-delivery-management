@@ -213,7 +213,7 @@ public class CompanyUIFrame extends JFrame {
 	private void setFoodsData() {
 		int storeIndex = StoreSession.getIdx_s();
 		DB db = new DB();
-		String sql = String.format("SELECT * FROM foods WHERE idx_s='%d'", storeIndex);
+		String sql = String.format("SELECT * FROM foods WHERE idx_s='%d' ORDER BY created_at ASC", storeIndex);
 		ResultSet rs = db.mfs(sql);
 		foods = new ArrayList<FoodSchema>();
 		
@@ -225,6 +225,8 @@ public class CompanyUIFrame extends JFrame {
 				int price = rs.getInt("price");
 				Timestamp created_at = rs.getTimestamp("created_at");
 				Timestamp updated_at = rs.getTimestamp("updated_at");
+				
+				System.out.println(idx_f);
 				
 				FoodSchema schema = new FoodSchema(idx_f, idx_s, name, price, created_at, updated_at);
 				foods.add(schema);
