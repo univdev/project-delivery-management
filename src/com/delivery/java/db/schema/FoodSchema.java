@@ -42,4 +42,8 @@ public class FoodSchema {
 	public void setPrice(int price) {
 		this.price = price;
 	}
+	public Object[] getObject() {
+		Object[] result = { this.idx, this.uid, this.name, this.price };
+		return result;
+	}
 }
