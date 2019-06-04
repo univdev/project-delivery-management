@@ -105,19 +105,7 @@ public class CompanyUIFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				int index = foodList.getSelectedIndex();
-				if (index < 0) {
-					JOptionPane.showMessageDialog(null, "데이터를 선택해주세요!");
-					return;
-				}
-				FoodSchema schema = foods.get(index);
-				int idx_f = schema.getIdx_f();
-				
-				DB db = new DB();
-				String sql = String.format("DELETE FROM foods WHERE idx_f='%d'", idx_f);
-				db.mq(sql);
-				
-				JOptionPane.showMessageDialog(null, "데이터가 삭제되었습니다.");
+				deleteFoodConfirm();
 			}
 		});
 		
@@ -272,7 +260,7 @@ public class CompanyUIFrame extends JFrame {
 				frame.setVisible(false);
 				
 				setFoodsData();
-				setFoodsList();
+				foodsModel.addElement(String.format("%s - %d원", name, frame.FoodPrice));
 			}
 		} else if (frame.FoodNameTf.getText().equals("") && !frame.FoodPriceTf.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "음식명을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
@@ -281,6 +269,23 @@ public class CompanyUIFrame extends JFrame {
 		} else if (frame.FoodNameTf.getText().equals("") && frame.FoodPriceTf.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "음식명, 가격을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
 		}
-
+	}
+	
+	private void deleteFoodConfirm() {
+		int index = foodList.getSelectedIndex();
+		if (index < 0) {
+			JOptionPane.showMessageDialog(null, "데이터를 선택해주세요!");
+			return;
+		}
+		FoodSchema schema = foods.get(index);
+		int idx_f = schema.getIdx_f();
+		
+		DB db = new DB();
+		String sql = String.format("DELETE FROM foods WHERE idx_f='%d'", idx_f);
+		db.mq(sql);
+		
+		JOptionPane.showMessageDialog(null, "데이터가 삭제되었습니다.");
+		
+		foodsModel.remove(index);
 	}
 }
