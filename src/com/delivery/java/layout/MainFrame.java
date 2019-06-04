@@ -136,7 +136,7 @@ public class MainFrame extends JFrame implements ActionListener{
 					
 					if (grade == 1) {
 						StoreListFrame customerFrame = new StoreListFrame();
-						customerFrame.visible(true);
+						customerFrame.setVisible(true);
 					} else if (grade == 2) {
 						CompanyUIFrame companyFrame = new CompanyUIFrame("업체 관리");
 						companyFrame.visible(true);
