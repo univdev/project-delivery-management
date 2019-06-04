@@ -53,8 +53,8 @@ public class StoreSession {
 
 
 
-	public static void setCreated_at(Timestamp timestamp) {
-		StoreSession.created_at = timestamp;
+	public static void setCreated_at(Timestamp created_at) {
+		StoreSession.created_at = created_at;
 	}
 
 

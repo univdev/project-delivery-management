@@ -71,7 +71,7 @@ public class StoreListFrame extends JFrame{
 		buttonPanel.add(selectButton);
 		panel.add(buttonPanel, BorderLayout.SOUTH);
 		
-		this.getStores();
+		this.setStoreData();
 		this.setStoreList();
 		
 		JScrollPane pane = new JScrollPane(list);
@@ -101,7 +101,7 @@ public class StoreListFrame extends JFrame{
 		customerFrame.setVisible(true);
 	}
 	
-	private void getStores() {
+	private void setStoreData() {
 		DB db = new DB();
 		String sql = "SELECT * FROM stores";
 		stores = new ArrayList<StoreSchema>();
@@ -128,8 +128,8 @@ public class StoreListFrame extends JFrame{
 	
 	private void setStoreList() {
 		int index = 0;
+		model = new DefaultListModel<String>();
 		for (StoreSchema store : stores) {
-			model = new DefaultListModel<String>();
 			list = new JList<String>(model);
 			
 			model.add(index, store.getName());

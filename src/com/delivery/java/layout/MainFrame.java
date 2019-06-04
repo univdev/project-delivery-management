@@ -17,6 +17,9 @@ import javax.swing.JOptionPane;
 import com.delivery.java.db.DB;
 import com.delivery.java.encrypt.Encrypt;
 import com.delivery.java.session.AccountSession;
+import com.delivery.java.session.StoreSession;
+
+import oracle.net.ns.SessionAtts;
 
 public class MainFrame extends JFrame implements ActionListener{
 	
@@ -112,12 +115,10 @@ public class MainFrame extends JFrame implements ActionListener{
 						return;
 					}
 					
-					int grade = 0;
-					
 					try {
 						ResultSet rs = db.mfs(sql);
 						rs.first();
-						grade = rs.getInt("grade");
+						int grade = rs.getInt("grade");
 						
 						AccountSession.setIdx_a(rs.getInt("idx_a"));
 						AccountSession.setAccount(account);
@@ -129,20 +130,32 @@ public class MainFrame extends JFrame implements ActionListener{
 						AccountSession.setCreated_at(rs.getTimestamp("created_at"));
 						AccountSession.setUpdated_at(rs.getTimestamp("updated_at"));
 						
+						if (grade == 2) {
+							String companySQL = String.format("SELECT * FROM stores WHERE idx_a='%d'", rs.getInt("idx_a"));
+							ResultSet companyRows = db.mfs(companySQL);
+							companyRows.first();
+							
+							StoreSession.setIdx_a(companyRows.getInt("idx_a"));
+							StoreSession.setIdx_s(companyRows.getInt("idx_s"));
+							StoreSession.setName(companyRows.getString("name"));
+							StoreSession.setCreated_at(companyRows.getTimestamp("created_at"));
+							StoreSession.setUpdated_at(companyRows.getTimestamp("updated_at"));
+						}
+						
+						if (grade == 1) {
+							StoreListFrame customerFrame = new StoreListFrame();
+							customerFrame.visible(true);
+						} else if (grade == 2) {
+							CompanyUIFrame companyFrame = new CompanyUIFrame("업체 관리");
+							companyFrame.setVisible(true);
+						}
+						
+						login.setVisible(false);
+						
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					
-					if (grade == 1) {
-						StoreListFrame customerFrame = new StoreListFrame();
-						customerFrame.setVisible(true);
-					} else if (grade == 2) {
-						CompanyUIFrame companyFrame = new CompanyUIFrame("업체 관리");
-						companyFrame.visible(true);
-					}
-					
-					login.setVisible(false);
 				}
 			});
 			
