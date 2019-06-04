@@ -11,6 +11,7 @@ public class AccountSchema {
 	private int point = 0;
 	private int created_at = 0;
 	private int updated_at = 0;
+	
 	public int getIdx_a() {
 		return idx_a;
 	}

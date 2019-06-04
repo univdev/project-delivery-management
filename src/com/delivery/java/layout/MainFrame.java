@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 
 import com.delivery.java.db.DB;
 import com.delivery.java.encrypt.Encrypt;
+import com.delivery.java.session.AccountSession;
 
 public class MainFrame extends JFrame implements ActionListener{
 	
@@ -94,10 +95,7 @@ public class MainFrame extends JFrame implements ActionListener{
 			login.setVisible(true);
 			
 			login.LoginButton.addActionListener(new ActionListener() {
-				
-				StoreListFrame customerFrame = new StoreListFrame();
-				CompanyUIFrame companyFrame = new CompanyUIFrame("업체 관리");
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
@@ -105,9 +103,6 @@ public class MainFrame extends JFrame implements ActionListener{
 					
 					String account = login.LoginTextField.getText();
 					String password = Encrypt.SHA256(login.PasswordTextField.getText());
-					
-					System.out.println(account);
-					System.out.println(password);
 					
 					String sql = String.format("SELECT * FROM ACCOUNTS WHERE ACCOUNT='%s' AND PASSWORD='%s'", account, password);
 					int count = db.mn(sql);
@@ -123,14 +118,27 @@ public class MainFrame extends JFrame implements ActionListener{
 						ResultSet rs = db.mfs(sql);
 						rs.first();
 						grade = rs.getInt("grade");
+						
+						AccountSession.setIdx_a(rs.getInt("idx_a"));
+						AccountSession.setAccount(account);
+						AccountSession.setPassword(password);
+						AccountSession.setCompany(rs.getString("company"));
+						AccountSession.setAddress(rs.getString("address"));
+						AccountSession.setPhone(rs.getString("phone"));
+						AccountSession.setPoint(rs.getInt("point"));
+						AccountSession.setCreated_at(rs.getTimestamp("created_at"));
+						AccountSession.setUpdated_at(rs.getTimestamp("updated_at"));
+						
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					
 					if (grade == 1) {
+						StoreListFrame customerFrame = new StoreListFrame();
 						customerFrame.visible(true);
 					} else if (grade == 2) {
+						CompanyUIFrame companyFrame = new CompanyUIFrame("업체 관리");
 						companyFrame.visible(true);
 					}
 					
