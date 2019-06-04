@@ -105,8 +105,6 @@ public class AddingFoodFrame extends JFrame implements KeyListener, ActionListen
 		add(CancelBtn);
 		add(lbl5);
 
-		setVisible(true);
-
 	}
 
 	// 다 만든 후 main 삭제할 것
@@ -149,37 +147,37 @@ public class AddingFoodFrame extends JFrame implements KeyListener, ActionListen
 		Object obj = e.getSource();
 
 		if (obj == OkBtn) {
-			if(!FoodNameTf.getText().equals("") && !FoodPriceTf.getText().equals("")) {	// 음식명, 가격 != null
-				
-				// INSERT문을 통해 FoodPrice (int) 값을 전달하기 위한 Cast
-				FoodPrice = Integer.parseInt(FoodPriceTf.getText());
-
-				df = new DecimalFormat("###,###");
-				
-				if((JOptionPane.showConfirmDialog(null,
-						"음식명 : " + FoodNameTf.getText() + ", \n" +
-								"가격 : " + df.format(FoodPrice) + " 원 \n" +
-								"위 입력사항이 맞습니까?",
-								"음식 추가", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-
-						== JOptionPane.YES_OPTION)) {
-					// Dialog에서 'Yes' 버튼을 눌렀을 때
-					// 여기에 INSERT문(DB) 추가
-
-
-
-				} else {
-					// Dialog에서 'No' 버튼을 눌렀을 때
-
-				} 
-
-			} else if (FoodNameTf.getText().equals("") && !FoodPriceTf.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "음식명을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
-			} else if (!FoodNameTf.getText().equals("") && FoodPriceTf.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "가격을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
-			} else if (FoodNameTf.getText().equals("") && FoodPriceTf.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "음식명, 가격을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
-			}
+//			if(!FoodNameTf.getText().equals("") && !FoodPriceTf.getText().equals("")) {	// 음식명, 가격 != null
+//				
+//				// INSERT문을 통해 FoodPrice (int) 값을 전달하기 위한 Cast
+//				FoodPrice = Integer.parseInt(FoodPriceTf.getText());
+//
+//				df = new DecimalFormat("###,###");
+//				
+//				if((JOptionPane.showConfirmDialog(null,
+//						"음식명 : " + FoodNameTf.getText() + ", \n" +
+//								"가격 : " + df.format(FoodPrice) + " 원 \n" +
+//								"위 입력사항이 맞습니까?",
+//								"음식 추가", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+//
+//						== JOptionPane.YES_OPTION)) {
+//					// Dialog에서 'Yes' 버튼을 눌렀을 때
+//					// 여기에 INSERT문(DB) 추가
+//
+//
+//
+//				} else {
+//					// Dialog에서 'No' 버튼을 눌렀을 때
+//
+//				} 
+//
+//			} else if (FoodNameTf.getText().equals("") && !FoodPriceTf.getText().equals("")) {
+//				JOptionPane.showMessageDialog(null, "음식명을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
+//			} else if (!FoodNameTf.getText().equals("") && FoodPriceTf.getText().equals("")) {
+//				JOptionPane.showMessageDialog(null, "가격을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
+//			} else if (FoodNameTf.getText().equals("") && FoodPriceTf.getText().equals("")) {
+//				JOptionPane.showMessageDialog(null, "음식명, 가격을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
+//			}
 
 		} else if (obj == CancelBtn) {
 

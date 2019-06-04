@@ -1,34 +1,25 @@
 package com.delivery.java.db.schema;
 
+import java.sql.Timestamp;
+
 public class FoodSchema {
-	// 상품의 idx
-	private int idx = 0;
-	// 상품이 등록된 업소의 idx
-	private int uid = 0;
-	// 상품 이름
+	private int idx_f = 0;
+	private int idx_s = 0;
 	private String name = null;
-	// 상품 가격
 	private int price = 0;
-	
-	public FoodSchema(int idx, int uid, String name, int price) {
-		super();
-		this.idx = idx;
-		this.uid = uid;
-		this.name = name;
-		this.price = price;
+	private Timestamp created_at = null;
+	private Timestamp updated_at = null;
+	public int getIdx_f() {
+		return idx_f;
 	}
-	
-	public int getIdx() {
-		return idx;
+	public void setIdx_f(int idx_f) {
+		this.idx_f = idx_f;
 	}
-	public void setIdx(int idx) {
-		this.idx = idx;
+	public int getIdx_s() {
+		return idx_s;
 	}
-	public int getUid() {
-		return uid;
-	}
-	public void setUid(int uid) {
-		this.uid = uid;
+	public void setIdx_s(int idx_s) {
+		this.idx_s = idx_s;
 	}
 	public String getName() {
 		return name;
@@ -42,8 +33,27 @@ public class FoodSchema {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public Object[] getObject() {
-		Object[] result = { this.idx, this.uid, this.name, this.price };
-		return result;
+	public Timestamp getCreated_at() {
+		return created_at;
 	}
+	public void setCreated_at(Timestamp created_at) {
+		this.created_at = created_at;
+	}
+	public Timestamp getUpdated_at() {
+		return updated_at;
+	}
+	public void setUpdated_at(Timestamp updated_at) {
+		this.updated_at = updated_at;
+	}
+	public FoodSchema(int idx_f, int idx_s, String name, int price, Timestamp created_at, Timestamp updated_at) {
+		super();
+		this.idx_f = idx_f;
+		this.idx_s = idx_s;
+		this.name = name;
+		this.price = price;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+	}
+	
+	
 }
