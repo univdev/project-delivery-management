@@ -8,9 +8,14 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -24,18 +29,26 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableColumnModel;
 
+import com.delivery.java.db.DB;
 import com.delivery.java.db.schema.FoodSchema;
 import com.delivery.java.notification.NotificationManager;
+import com.delivery.java.session.StoreSession;
 
 public class CompanyUIFrame extends JFrame {
 	
 	private JPanel gridPanel = null;
-	private JList<FoodSchema> foodList = null;
+	private JList<String> foodList = null;
+	private ArrayList<FoodSchema> foods = null;
+	private DefaultListModel<String> foodsModel = null;
+	
 	private JLabel priceLabel = null;
-	private int price = 0;
+	
 	private PaymentUIFrame paymentFrame = null;
+	
 	private JComboBox<Integer> durationCombobox = null;
 	private JTable orderListTable;
+	
+	private int price = 0;
 	
 	public static void main(String args[]) {
 		new CompanyUIFrame("");
@@ -51,7 +64,11 @@ public class CompanyUIFrame extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
-		foodList = new JList<FoodSchema>();
+		// 음식 데이터 변수에 삽입
+		this.setFoodsData();
+		// 실제 보여지는 음싣 데이터 초기화
+		this.setFoodsList();
+		
 		JScrollPane foodListPane = new JScrollPane(foodList);
 		
 		gridPanel = new JPanel();
@@ -63,25 +80,14 @@ public class CompanyUIFrame extends JFrame {
 		foodButtonPanel.add(foodAddButton);
 		foodButtonPanel.add(foodDeleteButton);
 		
-		/*
-		 * 지불 방식 관련 설정
-		 * TODO: paymentFrame을 통해서 선택된 결제방식을 갖고온다.
-		 */
-		paymentFrame = new PaymentUIFrame("지불 방식", new Dimension(400, 160));
-		paymentFrame.addConfirmEvent(new ActionListener() {
-			// 결제 관련 로직을 아래에 작성
+		foodAddButton.addActionListener(new ActionListener() {
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ButtonModel model = paymentFrame.group.getSelection();
-				if (model == null) {
-					JOptionPane.showMessageDialog(null, "결제 수단을 입력해주세요.");
-					return;
-				}
-				String actionCommand = model.getActionCommand();
-				paymentFrame.visible(false);
+				AddingFoodFrame addFrame = new AddingFoodFrame("음식 추가");
 				
-				NotificationManager.push("주문이 완료되었습니다.", "사장님이 확인하실 때 까지 기다리는 중입니다.");
+				addFrame.setVisible(true);
 			}
 		});
 		
@@ -162,6 +168,46 @@ public class CompanyUIFrame extends JFrame {
 		panel.add(confirmButton);
 		
 		return panel;
+	}
+	
+	private void setFoodsList() {
+		int index = 0;
+		foodsModel = new DefaultListModel<String>();
+		foodList = new JList<String>(foodsModel);
+		
+		for (FoodSchema schema : foods) {
+			String name = schema.getName();
+			int price = schema.getPrice();
+			foodsModel.add(index, String.format("%s - %d", name, price));
+			
+			index += 1;
+		}
+	}
+	
+	private void setFoodsData() {
+		int storeIndex = StoreSession.getIdx_s();
+		DB db = new DB();
+		String sql = String.format("SELECT * FROM foods WHERE idx_s='%d'", storeIndex);
+		System.out.println(sql);
+		ResultSet rs = db.mfs(sql);
+		foods = new ArrayList<FoodSchema>();
+		
+		try {
+			while (rs.next()) {
+				int idx_f = rs.getInt("idx_f");
+				int idx_s = rs.getInt("idx_s");
+				String name = rs.getString("name");
+				int price = rs.getInt("price");
+				Timestamp created_at = rs.getTimestamp("created_at");
+				Timestamp updated_at = rs.getTimestamp("updated_at");
+				
+				FoodSchema schema = new FoodSchema(idx_f, idx_s, name, price, created_at, updated_at);
+				foods.add(schema);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void setPriceLabel(int price) {

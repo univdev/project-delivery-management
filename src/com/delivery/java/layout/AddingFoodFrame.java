@@ -105,8 +105,6 @@ public class AddingFoodFrame extends JFrame implements KeyListener, ActionListen
 		add(CancelBtn);
 		add(lbl5);
 
-		setVisible(true);
-
 	}
 
 	// 다 만든 후 main 삭제할 것

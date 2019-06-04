@@ -1,12 +1,14 @@
 package com.delivery.java.session;
 
+import java.sql.Timestamp;
+
 public class StoreSession {
 
 	private static int idx_s = 0;
 	private static int idx_a = 0;
 	private static String name = null;
-	private static int created_at = 0;
-	private static int updated_at = 0;
+	private static Timestamp created_at = null;
+	private static Timestamp updated_at = null;
 	private static String methods = null;
 	
 	public static int getIdx_s() {
@@ -45,26 +47,26 @@ public class StoreSession {
 
 
 
-	public static int getCreated_at() {
+	public static Timestamp getCreated_at() {
 		return created_at;
 	}
 
 
 
-	public static void setCreated_at(int created_at) {
+	public static void setCreated_at(Timestamp created_at) {
 		StoreSession.created_at = created_at;
 	}
 
 
 
-	public static int getUpdated_at() {
+	public static Timestamp getUpdated_at() {
 		return updated_at;
 	}
 
 
 
-	public static void setUpdated_at(int updated_at) {
-		StoreSession.updated_at = updated_at;
+	public static void setUpdated_at(Timestamp timestamp) {
+		StoreSession.updated_at = timestamp;
 	}
 
 
