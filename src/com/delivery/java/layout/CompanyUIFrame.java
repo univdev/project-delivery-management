@@ -214,7 +214,6 @@ public class CompanyUIFrame extends JFrame {
 		int storeIndex = StoreSession.getIdx_s();
 		DB db = new DB();
 		String sql = String.format("SELECT * FROM foods WHERE idx_s='%d'", storeIndex);
-		System.out.println(sql);
 		ResultSet rs = db.mfs(sql);
 		foods = new ArrayList<FoodSchema>();
 		
