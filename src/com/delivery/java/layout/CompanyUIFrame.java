@@ -120,20 +120,28 @@ public class CompanyUIFrame extends JFrame {
 		});
 		
 		JPanel leftPanel = new JPanel();
+		JPanel foodListLabelPanel = new JPanel();
 		JLabel foodListLabel = new JLabel("음식 리스트");
+		foodListLabelPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		foodListLabelPanel.add(foodListLabel);
 		foodListLabel.setHorizontalAlignment(JLabel.LEFT);
+		leftPanel.setLayout(new BorderLayout());
 		leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		leftPanel.add(foodListLabel);
-		leftPanel.add(foodListPane);
-		leftPanel.add(foodButtonPanel);
+		leftPanel.add(foodListLabelPanel, BorderLayout.NORTH);
+		leftPanel.add(foodListPane, BorderLayout.CENTER);
+		leftPanel.add(foodButtonPanel, BorderLayout.SOUTH);
 		
 		JPanel rightPanel = new JPanel();
+		JPanel selectedFoodLabelPanel = new JPanel();
 		JLabel selectedFoodListLabel = new JLabel("주문 리스트");
+		selectedFoodLabelPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		selectedFoodLabelPanel.add(selectedFoodListLabel);
 		selectedFoodListLabel.setHorizontalAlignment(JLabel.LEFT);
+		rightPanel.setLayout(new BorderLayout());
 		rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		rightPanel.add(selectedFoodListLabel);
-		rightPanel.add(orderListTable());
-		rightPanel.add(orderListOptionPanel());
+		rightPanel.add(selectedFoodLabelPanel, BorderLayout.NORTH);
+		rightPanel.add(orderListTable(), BorderLayout.CENTER);
+		rightPanel.add(orderListOptionPanel(), BorderLayout.SOUTH);
 		
 		gridPanel.add(leftPanel);
 		gridPanel.add(rightPanel);
