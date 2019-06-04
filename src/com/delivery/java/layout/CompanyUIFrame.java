@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -86,8 +87,37 @@ public class CompanyUIFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				AddingFoodFrame addFrame = new AddingFoodFrame("음식 추가");
-				
 				addFrame.setVisible(true);
+				
+				addFrame.OkBtn.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						addFoodConfirm(addFrame);
+					}
+				});
+			}
+		});
+		
+		foodDeleteButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int index = foodList.getSelectedIndex();
+				if (index < 0) {
+					JOptionPane.showMessageDialog(null, "데이터를 선택해주세요!");
+					return;
+				}
+				FoodSchema schema = foods.get(index);
+				int idx_f = schema.getIdx_f();
+				
+				DB db = new DB();
+				String sql = String.format("DELETE FROM foods WHERE idx_f='%d'", idx_f);
+				db.mq(sql);
+				
+				JOptionPane.showMessageDialog(null, "데이터가 삭제되었습니다.");
 			}
 		});
 		
@@ -178,7 +208,7 @@ public class CompanyUIFrame extends JFrame {
 		for (FoodSchema schema : foods) {
 			String name = schema.getName();
 			int price = schema.getPrice();
-			foodsModel.add(index, String.format("%s - %d", name, price));
+			foodsModel.add(index, String.format("%s - %d원", name, price));
 			
 			index += 1;
 		}
@@ -214,7 +244,43 @@ public class CompanyUIFrame extends JFrame {
 		priceLabel.setText(String.format("총 금액: %d원", price));
 	}
 	
-	public void visible(boolean flag) {
-		this.setVisible(flag);
+	private void addFoodConfirm(AddingFoodFrame frame) {
+		if(!frame.FoodNameTf.getText().equals("") && !frame.FoodPriceTf.getText().equals("")) {	// 음식명, 가격 != null
+			
+			// INSERT문을 통해 FoodPrice (int) 값을 전달하기 위한 Cast
+			frame.FoodPrice = Integer.parseInt(frame.FoodPriceTf.getText());
+
+			frame.df = new DecimalFormat("###,###");
+			
+			if((JOptionPane.showConfirmDialog(null,
+					"음식명 : " + frame.FoodNameTf.getText() + ", \n" +
+							"가격 : " + frame.df.format(frame.FoodPrice) + " 원 \n" +
+							"위 입력사항이 맞습니까?",
+							"음식 추가", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+
+					== JOptionPane.YES_OPTION)) {
+				// Dialog에서 'Yes' 버튼을 눌렀을 때
+				// 여기에 INSERT문(DB) 추가
+				DB db = new DB();
+				int idx_s = StoreSession.getIdx_s();
+				String name = frame.FoodNameTf.getText();
+				String sql = String.format("INSERT INTO foods (idx_f, idx_s, name, price) VALUES (sq_f.NEXTVAL, '%d', '%s', '%d')", idx_s, name, frame.FoodPrice);
+				db.mq(sql);
+				
+				JOptionPane.showMessageDialog(null, "음식이 추가되었습니다.");
+				
+				frame.setVisible(false);
+				
+				setFoodsData();
+				setFoodsList();
+			}
+		} else if (frame.FoodNameTf.getText().equals("") && !frame.FoodPriceTf.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "음식명을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
+		} else if (!frame.FoodNameTf.getText().equals("") && frame.FoodPriceTf.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "가격을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
+		} else if (frame.FoodNameTf.getText().equals("") && frame.FoodPriceTf.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "음식명, 가격을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
+		}
+
 	}
 }
