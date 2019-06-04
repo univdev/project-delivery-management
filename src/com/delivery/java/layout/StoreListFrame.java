@@ -14,10 +14,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.delivery.java.db.schema.CompanySchema;
+import com.delivery.java.db.schema.StoreSchema;
 
 public class StoreListFrame extends JFrame{
-	public JList<CompanySchema> list = null;
+	public JList<StoreSchema> list = null;
 	
 	public static void main(String [] args)
 	{
@@ -59,7 +59,7 @@ public class StoreListFrame extends JFrame{
 		buttonPanel.add(selectButton);
 		panel.add(buttonPanel, BorderLayout.SOUTH);
 		
-		list = new JList<CompanySchema>();
+		list = new JList<StoreSchema>();
 		
 		JScrollPane pane = new JScrollPane(list);
 		panel.add(pane, BorderLayout.CENTER);
