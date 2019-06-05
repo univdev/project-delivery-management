@@ -38,9 +38,9 @@ import com.delivery.java.session.StoreSession;
 public class CompanyUIFrame extends JFrame {
 	
 	private JPanel gridPanel = null;
-	private JList<String> foodList = null;
+	private JList<FoodSchema> foodList = null;
 	private ArrayList<FoodSchema> foods = null;
-	private DefaultListModel<String> foodsModel = null;
+	private DefaultListModel<FoodSchema> foodsModel = null;
 	
 	private JLabel priceLabel = null;
 	
@@ -59,11 +59,14 @@ public class CompanyUIFrame extends JFrame {
 	
 	public CompanyUIFrame(String title) {
 		this.setTitle(title);
-		this.setSize(new Dimension(600, 270));
+		this.setSize(new Dimension(900, 560));
 		this.setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		
+		foodsModel = new DefaultListModel<FoodSchema>();
+		foodList = new JList<FoodSchema>(foodsModel);
 		
 		// 음식 데이터 변수에 삽입
 		this.setFoodsData();
@@ -198,14 +201,9 @@ public class CompanyUIFrame extends JFrame {
 	
 	private void setFoodsList() {
 		int index = 0;
-		foodsModel = new DefaultListModel<String>();
-		foodList = new JList<String>(foodsModel);
 		
 		for (FoodSchema schema : foods) {
-			String name = schema.getName();
-			int price = schema.getPrice();
-			foodsModel.add(index, String.format("%s - %d원", name, price));
-			
+			foodsModel.add(index, schema);
 			index += 1;
 		}
 	}
@@ -264,12 +262,30 @@ public class CompanyUIFrame extends JFrame {
 				String sql = String.format("INSERT INTO foods (idx_f, idx_s, name, price) VALUES (sq_f.NEXTVAL, '%d', '%s', '%d')", idx_s, name, frame.FoodPrice);
 				db.mq(sql);
 				
-				JOptionPane.showMessageDialog(null, "음식이 추가되었습니다.");
-				
 				frame.setVisible(false);
 				
 				setFoodsData();
-				foodsModel.addElement(String.format("%s - %d원", name, frame.FoodPrice));
+				
+				FoodSchema insertSchema;
+				try {
+					ResultSet rs = db.mfs(String.format("SELECT * FROM foods WHERE idx_s='%d' ORDER BY created_at DESC", StoreSession.getIdx_s()));
+					rs.first();
+					
+					insertSchema = new FoodSchema(
+							rs.getInt("idx_f"),
+							rs.getInt("idx_s"),
+							rs.getString("name"),
+							rs.getInt("price"),
+							rs.getTimestamp("created_at"),
+							rs.getTimestamp("updated_at"));
+					
+					foodsModel.addElement(insertSchema);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				JOptionPane.showMessageDialog(null, "음식이 추가되었습니다.");
 			}
 		} else if (frame.FoodNameTf.getText().equals("") && !frame.FoodPriceTf.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "음식명을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
