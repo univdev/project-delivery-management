@@ -6,6 +6,7 @@ public class OrderSchema {
 	private int idx_o;
 	private int idx_a;
 	private int idx_s;
+	private String storeName;
 	private String foods;
 	private int duration;
 	private String comments;
@@ -26,6 +27,12 @@ public class OrderSchema {
 	}
 	public int getIdx_s() {
 		return idx_s;
+	}
+	public String getStoreName() {
+		return storeName;
+	}
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
 	}
 	public void setIdx_s(int idx_s) {
 		this.idx_s = idx_s;
@@ -79,6 +86,18 @@ public class OrderSchema {
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 	}
-	
-	
+	public OrderSchema(int idx_o, int idx_a, int idx_s, String storeName, String foods, int duration, String comments,
+			String method, Timestamp created_at, Timestamp updated_at) {
+		super();
+		this.idx_o = idx_o;
+		this.idx_a = idx_a;
+		this.idx_s = idx_s;
+		this.storeName = storeName;
+		this.foods = foods;
+		this.duration = duration;
+		this.comments = comments;
+		this.method = method;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+	}
 }
