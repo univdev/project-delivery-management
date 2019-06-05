@@ -3,16 +3,40 @@ package com.delivery.java.db.schema;
 import java.sql.Timestamp;
 
 public class OrderSchema {
-	private int idx_o;
-	private int idx_a;
-	private int idx_s;
-	private String storeName;
-	private String foods;
-	private int duration;
-	private String comments;
-	private String method;
-	private Timestamp created_at;
-	private Timestamp updated_at;
+	private int idx_o = 0;
+	private int idx_a = 0;
+	private int idx_s = 0;
+	private String storeName = null;
+	private String foods = null;
+	private int duration = 0;
+	private String comments = null;
+	private String method = null;
+	private Timestamp created_at = null;
+	private Timestamp updated_at = null;
+	private String account = null;
+	
+	public OrderSchema() {
+		super();
+	}
+	public OrderSchema(int idx_o, int idx_a, int idx_s, String foods, int duration, String comments, String method,
+			Timestamp created_at, Timestamp updated_at) {
+		super();
+		this.idx_o = idx_o;
+		this.idx_a = idx_a;
+		this.idx_s = idx_s;
+		this.foods = foods;
+		this.duration = duration;
+		this.comments = comments;
+		this.method = method;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
+	}
+	public String getAccount() {
+		return account;
+	}
+	public void setAccount(String account) {
+		this.account = account;
+	}
 	public int getIdx_o() {
 		return idx_o;
 	}
@@ -71,33 +95,6 @@ public class OrderSchema {
 		return updated_at;
 	}
 	public void setUpdated_at(Timestamp updated_at) {
-		this.updated_at = updated_at;
-	}
-	public OrderSchema(int idx_o, int idx_a, int idx_s, String foods, int duration, String comments, String method,
-			Timestamp created_at, Timestamp updated_at) {
-		super();
-		this.idx_o = idx_o;
-		this.idx_a = idx_a;
-		this.idx_s = idx_s;
-		this.foods = foods;
-		this.duration = duration;
-		this.comments = comments;
-		this.method = method;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
-	}
-	public OrderSchema(int idx_o, int idx_a, int idx_s, String storeName, String foods, int duration, String comments,
-			String method, Timestamp created_at, Timestamp updated_at) {
-		super();
-		this.idx_o = idx_o;
-		this.idx_a = idx_a;
-		this.idx_s = idx_s;
-		this.storeName = storeName;
-		this.foods = foods;
-		this.duration = duration;
-		this.comments = comments;
-		this.method = method;
-		this.created_at = created_at;
 		this.updated_at = updated_at;
 	}
 }
