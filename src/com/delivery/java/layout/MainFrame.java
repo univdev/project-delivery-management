@@ -221,6 +221,15 @@ public class MainFrame extends JFrame implements ActionListener{
 					setVisible(true);
 				}
 			});
+			
+			signup.BackButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					signup.setVisible(false);
+					setVisible(true);
+				}
+			});
 		}
 
 		else if(obj == CompanySignupButton) {
