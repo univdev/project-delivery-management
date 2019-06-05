@@ -34,14 +34,14 @@ public class MainFrame extends JFrame implements ActionListener{
 	
 	public MainFrame(String title) {
 		this.setTitle(title);
-		this.setSize(400,380);
+		this.setSize(380,380);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
 		
 		label = new JLabel("배달의 백성");
 		label.setFont(new Font("맑은 고딕",Font.BOLD,30));
-		label.setBounds(115, 30, 200, 35);
+		label.setBounds(105, 30, 200, 35);
 		
 		Loginlabel = new JLabel("이미 아이디를 가지고 있습니다.");
 		Loginlabel.setFont(new Font("맑은 고딕", Font.PLAIN, 12));

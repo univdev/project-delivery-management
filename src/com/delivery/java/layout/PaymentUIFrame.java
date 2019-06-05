@@ -1,8 +1,10 @@
 package com.delivery.java.layout;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -11,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+
+import com.delivery.java.session.StoreSession;
 
 public class PaymentUIFrame extends JFrame {
 	
@@ -27,15 +31,18 @@ public class PaymentUIFrame extends JFrame {
 	/* 400 x 160 */
 
 	public PaymentUIFrame(String title, Dimension d) {
+		String[] payments = StoreSession.getMethods().split(",");
+		
 		this.setTitle(title);
 		this.setSize(d);
 		this.setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		panel.setLayout(new BorderLayout());
 		
 		JLabel label = new JLabel("결제 방식을 선택해주세요.");
-		panel.add(label);
+		label.setHorizontalAlignment(JLabel.CENTER);
 		
 		cashRadio = new JRadioButton("현금 결제");
 		cashRadio.setActionCommand("cash");
@@ -54,12 +61,10 @@ public class PaymentUIFrame extends JFrame {
 		group.add(kakaoRadio);
 		group.add(pointRadio);
 		
-		paymentPanel.add(cashRadio);
-		paymentPanel.add(cardRadio);
-		paymentPanel.add(kakaoRadio);
-		paymentPanel.add(pointRadio);
-		
-		panel.add(paymentPanel);
+		if (Arrays.asList(payments).contains("Cash")) paymentPanel.add(cashRadio);
+		if (Arrays.asList(payments).contains("Card")) paymentPanel.add(cardRadio);
+		if (Arrays.asList(payments).contains("Kakao")) paymentPanel.add(kakaoRadio);
+		if (Arrays.asList(payments).contains("Point")) paymentPanel.add(pointRadio);
 		
 		confirmButton = new JButton("최종 결정");
 		denyButton = new JButton("뒤로가기");
@@ -76,7 +81,9 @@ public class PaymentUIFrame extends JFrame {
 		buttonPanel.add(confirmButton);
 		buttonPanel.add(denyButton);
 		
-		panel.add(buttonPanel);
+		panel.add(label, BorderLayout.NORTH);
+		panel.add(paymentPanel, BorderLayout.CENTER);
+		panel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		this.add(panel);
 	}
