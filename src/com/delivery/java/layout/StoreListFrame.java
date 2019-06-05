@@ -16,12 +16,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.delivery.java.db.DB;
 import com.delivery.java.db.schema.StoreSchema;
 import com.delivery.java.session.AccountSession;
+import com.delivery.java.session.StoreSession;
 
 public class StoreListFrame extends JFrame{
 	public JList<String> list = null;
@@ -79,8 +81,24 @@ public class StoreListFrame extends JFrame{
 	}
 	
 	private void join() {
+		int index = list.getSelectedIndex();
+		
+		if (index < 0) {
+			JOptionPane.showMessageDialog(null, "업소를 선택해주세요.");
+			return;
+		}
+		
+		StoreSchema store = stores.get(index);
+		
+		StoreSession.setIdx_a(store.getIdx_a());
+		StoreSession.setIdx_s(store.getIdx_s());
+		StoreSession.setName(store.getName());
+		StoreSession.setCreated_at(store.getCreated_at());
+		StoreSession.setUpdated_at(store.getUpdated_at());
+		StoreSession.setMethods(store.getMethods());
+		
 		CustomerUIFrame customerFrame = new CustomerUIFrame("고객 UI");
-		customerFrame.visible(true);
+		customerFrame.setVisible(true);
 	}
 	
 	private void setStoreData() {
@@ -117,9 +135,5 @@ public class StoreListFrame extends JFrame{
 			model.add(index, store.getName());
 			index += 1;
 		}
-	}
-	
-	public void visible(boolean flag) {
-		this.setVisible(flag);
 	}
 }

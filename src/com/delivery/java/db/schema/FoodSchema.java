@@ -54,6 +54,8 @@ public class FoodSchema {
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 	}
-	
+	public String toString() {
+		return String.format("%s - %d원", name, price);
+	}
 	
 }
