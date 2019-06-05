@@ -154,7 +154,7 @@ public class CustomerUIFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				orderListFrame.visible(true);
+				orderListFrame.setVisible(true);
 			}
 		});
 		
