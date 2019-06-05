@@ -3,6 +3,10 @@ package com.delivery.java.layout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -11,12 +15,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import com.delivery.java.db.DB;
+import com.delivery.java.db.schema.FoodSchema;
+import com.delivery.java.db.schema.OrderSchema;
+import com.delivery.java.session.AccountSession;
+
+import oracle.sql.DATE;
 
 public class OrderViewFrame extends JFrame {
 	
 	public JTable table = null;
+	public DefaultTableModel tableModel = null;
 	public JButton cancelButton;
 	public JButton returnButton;
+	public ArrayList<OrderSchema> orders;
+	
+	private DB db = null;
 	
 	public static void main(String args[]) {
 		new OrderViewFrame("주문 내역", new Dimension(550, 450));
@@ -26,6 +42,9 @@ public class OrderViewFrame extends JFrame {
 		this.setTitle(title);
 		this.setSize(d);
 		this.setLocationRelativeTo(null);
+		
+		db = new DB();
+		orders = new ArrayList<OrderSchema>();
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
@@ -41,11 +60,18 @@ public class OrderViewFrame extends JFrame {
 		titlePanel.add(labelTitle);
 		panel.add(titlePanel, BorderLayout.NORTH);
 		
-		String columnNames[] = { "번호", "업체", "음식", "배송 여부", "도착 예정시간" };
-		Object data[][] = { { 1, "교촌치킨", "간장치킨, 양념치킨", "배송 중", "20분" }, { 2, "본죽", "전복죽", "배송 중", "30분" } };
+		tableModel = new DefaultTableModel();
+		tableModel.addColumn("번호");
+		tableModel.addColumn("업체");
+		tableModel.addColumn("음식");
+		tableModel.addColumn("배송 여부");
+		tableModel.addColumn("도착 예정시간");
 		
-		table = new JTable(data, columnNames);
+		table = new JTable(tableModel);
 		table.setRowSelectionAllowed(true);
+		
+		this.getOrder();
+		this.drawOrderTable();
 		
 		JScrollPane scrollPane = new JScrollPane(table);
 		panel.add(scrollPane, BorderLayout.CENTER);
@@ -62,7 +88,47 @@ public class OrderViewFrame extends JFrame {
 		this.add(panel);
 	}
 	
-	public void visible(boolean flag) {
-		this.setVisible(flag);
+	private void getOrder() {
+		int idx_a = AccountSession.getIdx_a();
+		String sql = String.format("SELECT * FROM orders WHERE idx_a='%d'", idx_a);
+		ResultSet rs = db.mfs(sql);
+		
+		try {
+			while (rs.next()) {
+				int idx_o = rs.getInt("idx_o");
+				int idx_s = rs.getInt("idx_s");
+				String foods = rs.getString("foods");
+				int duration = rs.getInt("duration");
+				String comments = rs.getString("comments");
+				String method = rs.getString("method");
+				Timestamp created_at = rs.getTimestamp("created_at");
+				Timestamp updated_at = rs.getTimestamp("updated_at");
+				
+				orders.add(new OrderSchema(idx_o, idx_a, idx_s, foods, duration, comments, method, created_at, updated_at));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void drawOrderTable() {
+		for (OrderSchema order : orders) {
+			String status = "배송 전";
+			
+			Timestamp updated_at = order.getUpdated_at();
+			int durationToMinute = 1000 * 60 * order.getDuration();
+			
+			long destination = updated_at.getTime() + durationToMinute;
+			long currentTime = System.currentTimeMillis();
+			
+			if (order.getDuration() > 0 && destination > currentTime)
+				status = "배송 중";
+			else if (order.getDuration() > 0 && destination <= currentTime)
+				status = "배송 완료";
+			
+			Object[] obj = { order.getIdx_o(), order.getIdx_s(), order.getFoods(), status, String.format("%d분", order.getDuration()) };
+			tableModel.addRow(obj);
+		}
 	}
 }
