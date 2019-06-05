@@ -36,13 +36,12 @@ import com.delivery.java.session.StoreSession;
 public class CustomerUIFrame extends JFrame {
 	
 	private JPanel gridPanel = null;
-	private JList<String> foodList = null;
-	private DefaultListModel<String> foodListModel = null;
+	private JList<FoodSchema> foodList = null;
+	private DefaultListModel<FoodSchema> foodListModel = null;
 	private ArrayList<FoodSchema> foods = null;
 	
-	private JList<String> selectedFoodList = null;
-	private DefaultListModel<String> selectedFoodListModel = null;
-	private ArrayList<FoodSchema> selectedFoods = null;
+	private JList<FoodSchema> selectedFoodList = null;
+	private DefaultListModel<FoodSchema> selectedFoodListModel = null;
 	
 	private JLabel priceLabel = null;
 	private PaymentUIFrame paymentFrame = null;
@@ -61,21 +60,38 @@ public class CustomerUIFrame extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
-		foodListModel = new DefaultListModel<String>();
-		foodList = new JList<String>(foodListModel);
+		foodListModel = new DefaultListModel<FoodSchema>();
+		foodList = new JList<FoodSchema>(foodListModel);
 		
-		selectedFoods = new ArrayList<FoodSchema>();
-		selectedFoodListModel = new DefaultListModel<String>();
-		selectedFoodList = new JList<String>(selectedFoodListModel);
+		selectedFoodListModel = new DefaultListModel<FoodSchema>();
+		selectedFoodList = new JList<FoodSchema>(selectedFoodListModel);
 		
 		priceLabel = new JLabel("");
 		this.setPriceLabel(this.getPrice());
 		
+		foods = new ArrayList<FoodSchema>();
+		
 		this.getFoodsData();
-		this.setFoodsList();
+		
+		int foodsIndex = 0;
+		
+		for (FoodSchema schema : foods) {
+			foodListModel.add(foodsIndex, schema);
+			foodsIndex += 1;
+		}
+		
+		foodList.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// TODO Auto-generated method stub
+				selectedFoodListModel.addElement(foodList.getSelectedValue());
+				setPriceLabel(getPrice());
+			}
+		});
+		
 		JScrollPane foodListPane = new JScrollPane(foodList);
 		
-		this.setSelectedFoodsList();
 		JScrollPane selectedFoodListPane = new JScrollPane(selectedFoodList);
 		
 		gridPanel = new JPanel();
@@ -160,7 +176,6 @@ public class CustomerUIFrame extends JFrame {
 		int storeIndex = StoreSession.getIdx_s();
 		String sql = String.format("SELECT * FROM foods WHERE idx_s='%d' ORDER BY created_at ASC", storeIndex);
 		DB db = new DB();
-		foods = new ArrayList<FoodSchema>();
 		
 		ResultSet rs = db.mfs(sql);
 		
@@ -182,42 +197,6 @@ public class CustomerUIFrame extends JFrame {
 		}
 	}
 	
-	private void setFoodsList() {
-		int index = 0;
-		foodList.addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				// TODO Auto-generated method stub
-				int selectedIndex = foodList.getSelectedIndex();
-				selectedFoods.add(foods.get(selectedIndex));
-				setSelectedFoodsList();
-			}
-		});
-		
-		for (FoodSchema schema : foods) {
-			String str = schema.getName() + " - " + schema.getPrice() + "원";
-			foodListModel.add(index, str);
-			index += 1;
-		}
-	}
-	
-	private void setSelectedFoodsList() {		
-		selectedFoodListModel.removeAllElements();
-		
-		int index = 0;
-		
-		for (FoodSchema schema : selectedFoods) {
-			String str = schema.getName() + " - " + schema.getPrice() + "원";
-			selectedFoodListModel.add(index, str);
-			index += 1;
-		}
-		
-		int price = this.getPrice();
-		
-		this.setPriceLabel(this.getPrice());
-	}
-	
 	private void setPriceLabel(int price) {
 		priceLabel.setText(String.format("총 금액: %d원", price));
 	}
@@ -225,8 +204,8 @@ public class CustomerUIFrame extends JFrame {
 	private int getPrice() {
 		int price = 0;
 		
-		for (FoodSchema schema : selectedFoods) {
-			price += schema.getPrice();
+		for (int i = 0; i < selectedFoodListModel.getSize(); i += 1) {
+			price += selectedFoodListModel.get(i).getPrice();
 		}
 		
 		return price;
