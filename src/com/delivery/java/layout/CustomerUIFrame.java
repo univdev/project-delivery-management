@@ -31,6 +31,7 @@ import javax.swing.event.ListSelectionListener;
 import com.delivery.java.db.DB;
 import com.delivery.java.db.schema.FoodSchema;
 import com.delivery.java.notification.NotificationManager;
+import com.delivery.java.session.AccountSession;
 import com.delivery.java.session.StoreSession;
 
 public class CustomerUIFrame extends JFrame {
@@ -112,8 +113,24 @@ public class CustomerUIFrame extends JFrame {
 					JOptionPane.showMessageDialog(null, "결제 수단을 입력해주세요.");
 					return;
 				}
+				DB db = new DB();
 				String actionCommand = model.getActionCommand();
 				paymentFrame.visible(false);
+				
+				int idx_a = AccountSession.getIdx_a();
+				int idx_s = StoreSession.getIdx_s();
+				
+				ArrayList<String> foods = new ArrayList<String>();
+				String method = paymentFrame.group.getSelection().getActionCommand();
+				
+				for (int i = 0; i < selectedFoodListModel.getSize(); i += 1) {
+					foods.add(selectedFoodListModel.get(i).getName());
+				}
+				
+				String sql = String.format("INSERT INTO orders (idx_o, idx_a, idx_s, foods, method)"
+						+ "VALUES (sq_o.NEXTVAL, '%d', '%d', '%s', '%s')", idx_a, idx_s, String.join(",", foods), method);
+				
+				db.mq(sql);
 				
 				NotificationManager.push("주문이 완료되었습니다.", "사장님이 확인하실 때 까지 기다리는 중입니다.");
 			}
