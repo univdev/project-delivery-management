@@ -108,7 +108,10 @@ public class OrderViewFrame extends JFrame {
 				Timestamp created_at = rs.getTimestamp("created_at");
 				Timestamp updated_at = rs.getTimestamp("updated_at");
 				
-				orders.add(new OrderSchema(idx_o, idx_a, idx_s, storeName, foods, duration, comments, method, created_at, updated_at));
+				OrderSchema schema = new OrderSchema(idx_o, idx_a, idx_s, foods, duration, comments, method, created_at, updated_at);
+				schema.setStoreName(storeName);
+				
+				orders.add(schema);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

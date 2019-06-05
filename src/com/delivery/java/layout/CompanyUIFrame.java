@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
@@ -28,19 +29,24 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import com.delivery.java.db.DB;
 import com.delivery.java.db.schema.FoodSchema;
+import com.delivery.java.db.schema.OrderSchema;
 import com.delivery.java.notification.NotificationManager;
+import com.delivery.java.session.AccountSession;
 import com.delivery.java.session.StoreSession;
+
+import oracle.sql.TIMESTAMP;
 
 public class CompanyUIFrame extends JFrame {
 	
 	private JPanel gridPanel = null;
-	private JList<String> foodList = null;
+	private JList<FoodSchema> foodList = null;
 	private ArrayList<FoodSchema> foods = null;
-	private DefaultListModel<String> foodsModel = null;
+	private DefaultListModel<FoodSchema> foodsModel = null;
 	
 	private JLabel priceLabel = null;
 	
@@ -48,6 +54,11 @@ public class CompanyUIFrame extends JFrame {
 	
 	private JComboBox<Integer> durationCombobox = null;
 	private JTable orderListTable;
+	private DefaultTableModel tableModel;
+	
+	private DB db = null;
+	
+	public ArrayList<OrderSchema> orders;
 	
 	private int price = 0;
 	
@@ -59,16 +70,33 @@ public class CompanyUIFrame extends JFrame {
 	
 	public CompanyUIFrame(String title) {
 		this.setTitle(title);
-		this.setSize(new Dimension(600, 270));
+		this.setSize(new Dimension(900, 560));
 		this.setLocationRelativeTo(null);
+		
+		db = new DB();
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		
+		foodsModel = new DefaultListModel<FoodSchema>();
+		foodList = new JList<FoodSchema>(foodsModel);
+		
+		orders = new ArrayList<OrderSchema>();
+		
+		tableModel = new DefaultTableModel();
+		tableModel.addColumn("번호");
+		tableModel.addColumn("주문자");
+		tableModel.addColumn("내역");
+		tableModel.addColumn("할 말");
+		orderListTable = new JTable(tableModel);
 		
 		// 음식 데이터 변수에 삽입
 		this.setFoodsData();
 		// 실제 보여지는 음싣 데이터 초기화
 		this.setFoodsList();
+		
+		this.getOrder();
+		this.drawOrderTable();
 		
 		JScrollPane foodListPane = new JScrollPane(foodList);
 		
@@ -150,9 +178,6 @@ public class CompanyUIFrame extends JFrame {
 	}
 	
 	private JScrollPane orderListTable() {
-		String columnNames[] = { "번호", "주문자", "내역", "할 말" };
-		Object data[][] = { { 1, "주문자", "내역", "할 말" }, { 1, "주문자", "내역", "할 말" } };
-		orderListTable = new JTable(data, columnNames);
 		TableColumnModel columns = orderListTable.getColumnModel();
 		
 		orderListTable.setMinimumSize(new Dimension(150, 250));
@@ -189,6 +214,18 @@ public class CompanyUIFrame extends JFrame {
 					JOptionPane.showMessageDialog(null, "주문을 선택해주세요.");
 					return;
 				}
+				
+				Date today = new Date();
+				Timestamp current = new Timestamp(today.getTime());
+				String idx_o = tableModel.getValueAt(index, 0).toString();
+				int duration = durationCombobox.getItemAt(durationCombobox.getSelectedIndex());
+				
+				String sql = String.format("UPDATE orders SET"
+						+ " duration='%d', updated_at=systimestamp WHERE idx_o='%s'", duration, idx_o);
+				db.mfs(sql);
+				System.out.println(sql);
+				
+				NotificationManager.push("주문을 수락했습니다.", String.format("해당 주문은 %d분 뒤에 종료됩니다.", duration));
 			}
 		});
 		panel.add(confirmButton);
@@ -198,14 +235,9 @@ public class CompanyUIFrame extends JFrame {
 	
 	private void setFoodsList() {
 		int index = 0;
-		foodsModel = new DefaultListModel<String>();
-		foodList = new JList<String>(foodsModel);
 		
 		for (FoodSchema schema : foods) {
-			String name = schema.getName();
-			int price = schema.getPrice();
-			foodsModel.add(index, String.format("%s - %d원", name, price));
-			
+			foodsModel.add(index, schema);
 			index += 1;
 		}
 	}
@@ -225,8 +257,6 @@ public class CompanyUIFrame extends JFrame {
 				int price = rs.getInt("price");
 				Timestamp created_at = rs.getTimestamp("created_at");
 				Timestamp updated_at = rs.getTimestamp("updated_at");
-				
-				System.out.println(idx_f);
 				
 				FoodSchema schema = new FoodSchema(idx_f, idx_s, name, price, created_at, updated_at);
 				foods.add(schema);
@@ -258,18 +288,35 @@ public class CompanyUIFrame extends JFrame {
 					== JOptionPane.YES_OPTION)) {
 				// Dialog에서 'Yes' 버튼을 눌렀을 때
 				// 여기에 INSERT문(DB) 추가
-				DB db = new DB();
 				int idx_s = StoreSession.getIdx_s();
 				String name = frame.FoodNameTf.getText();
 				String sql = String.format("INSERT INTO foods (idx_f, idx_s, name, price) VALUES (sq_f.NEXTVAL, '%d', '%s', '%d')", idx_s, name, frame.FoodPrice);
 				db.mq(sql);
 				
-				JOptionPane.showMessageDialog(null, "음식이 추가되었습니다.");
-				
 				frame.setVisible(false);
 				
 				setFoodsData();
-				foodsModel.addElement(String.format("%s - %d원", name, frame.FoodPrice));
+				
+				FoodSchema insertSchema;
+				try {
+					ResultSet rs = db.mfs(String.format("SELECT * FROM foods WHERE idx_s='%d' ORDER BY created_at DESC", StoreSession.getIdx_s()));
+					rs.first();
+					
+					insertSchema = new FoodSchema(
+							rs.getInt("idx_f"),
+							rs.getInt("idx_s"),
+							rs.getString("name"),
+							rs.getInt("price"),
+							rs.getTimestamp("created_at"),
+							rs.getTimestamp("updated_at"));
+					
+					foodsModel.addElement(insertSchema);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				JOptionPane.showMessageDialog(null, "음식이 추가되었습니다.");
 			}
 		} else if (frame.FoodNameTf.getText().equals("") && !frame.FoodPriceTf.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "음식명을 입력해 주세요.", "음식 추가", JOptionPane.ERROR_MESSAGE);
@@ -289,12 +336,61 @@ public class CompanyUIFrame extends JFrame {
 		FoodSchema schema = foods.get(index);
 		int idx_f = schema.getIdx_f();
 		
-		DB db = new DB();
 		String sql = String.format("DELETE FROM foods WHERE idx_f='%d'", idx_f);
 		db.mq(sql);
 		
 		JOptionPane.showMessageDialog(null, "데이터가 삭제되었습니다.");
 		
 		foodsModel.remove(index);
+	}
+	
+	private void getOrder() {
+		int idx_s = StoreSession.getIdx_s();
+		String sql = String.format("SELECT orders.*, accounts.account FROM orders, accounts"
+				+ " WHERE orders.idx_a = accounts.idx_a AND orders.idx_s = '%d'", idx_s);
+		
+		ResultSet rs = db.mfs(sql);
+		
+		try {
+			while (rs.next()) {
+				int idx_o = rs.getInt("idx_o");
+				int idx_a = rs.getInt("idx_a");
+				String foods = rs.getString("foods");
+				int duration = rs.getInt("duration");
+				String comments = rs.getString("comments");
+				String method = rs.getString("method");
+				Timestamp created_at = rs.getTimestamp("created_at");
+				Timestamp updated_at = rs.getTimestamp("updated_at");
+				String account = rs.getString("account");
+				
+				OrderSchema orderSchema = new OrderSchema(idx_o, idx_a, idx_s, foods, duration, comments, method, created_at, updated_at);
+				orderSchema.setAccount(account);
+				
+				orders.add(orderSchema);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void drawOrderTable() {
+		for (OrderSchema order : orders) {
+			String status = "배송 전";
+			
+			Timestamp updated_at = order.getUpdated_at();
+			int durationToMinute = 1000 * 60 * order.getDuration();
+			
+			long destination = updated_at.getTime() + durationToMinute;
+			long currentTime = System.currentTimeMillis();
+			
+			if (order.getDuration() > 0 && destination > currentTime)
+				status = "배송 중";
+			else if (order.getDuration() > 0 && destination <= currentTime)
+				status = "배송 완료";
+			
+			Object[] obj = { order.getIdx_o(), order.getAccount(), order.getFoods(), order.getComments() };
+			tableModel.addRow(obj);
+		}
 	}
 }
