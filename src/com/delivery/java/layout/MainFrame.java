@@ -261,6 +261,11 @@ public class MainFrame extends JFrame implements ActionListener{
 						return;
 					}
 					
+					if (!signup.Card.isSelected() && !signup.Cash.isSelected() && !signup.Kakao.isSelected() && !signup.Point.isSelected()) {
+						JOptionPane.showMessageDialog(null, "적어도 하나의 결제 방식을 선택해 주세요.", "사장 회원가입", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					
 					password = Encrypt.SHA256(password);
 					
 					String accountSQL = String.format("INSERT INTO ACCOUNTS"
