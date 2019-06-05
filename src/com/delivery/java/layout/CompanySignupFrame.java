@@ -32,6 +32,8 @@ public class CompanySignupFrame extends JFrame{
 	public JTextField NameTextField;
 	public JTextField PhoneNumburTextField;
 	public JButton SignupButton;
+	public JButton BackButton;
+	
 	public JTextField AddressTextField;
 	public JLabel Companylabel;
 	public JTextField CompanyTextField;
@@ -44,14 +46,14 @@ public class CompanySignupFrame extends JFrame{
 	
 	public CompanySignupFrame(String title) {
 		this.setTitle(title);
-		this.setSize(400,850);
+		this.setSize(374,850);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
 		
 		label = new JLabel("사장 회원가입");
 		label.setFont(new Font("맑은 고딕",Font.BOLD,30));
-		label.setBounds(95, 30, 250, 35);
+		label.setBounds(85, 30, 250, 35);
 		
 		IDlabel = new JLabel("아이디");
 		IDlabel.setFont(new Font("맑은 고딕",Font.PLAIN, 15));
@@ -130,12 +132,16 @@ public class CompanySignupFrame extends JFrame{
 		
 		Kakao = new JCheckBox("카카오페이");
 		Kakao.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		Kakao.setBounds(180, 671, 100, 35);
+		Kakao.setBounds(180, 671, 110, 35);
 		Kakao.setActionCommand("Kakao");
 		
 		SignupButton = new JButton("가입하기");
 		SignupButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		SignupButton.setBounds(30, 745, 150, 35);
+		SignupButton.setBounds(30, 745, 140, 35);
+		
+		BackButton = new JButton("뒤로가기");
+		BackButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		BackButton.setBounds(190, 745, 140, 35);
 		
 		add(label);
 		add(IDlabel);
@@ -153,6 +159,7 @@ public class CompanySignupFrame extends JFrame{
 		add(Companylabel);
 		add(CompanyTextField);
 		add(SignupButton);
+		add(BackButton);
 		add(Paymentlabel);
 		add(Cash);
 		add(Card);
