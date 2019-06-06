@@ -184,6 +184,26 @@ public class MainFrame extends JFrame implements ActionListener{
 		else if(obj == CustomerSignupButton) {
 			this.setVisible(false);
 			CustomerSignupFrame signup = new CustomerSignupFrame("고객 회원가입");
+			
+			signup.uniqueCheckButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					String account = signup.IDTextField.getText();
+					
+					String sql = String.format("SELECT * FROM accounts WHERE account='%s'", account);
+					int count = db.mn(sql);
+					
+					if (count > 0) {
+						JOptionPane.showMessageDialog(null, "이미 존재하는 아이디입니다.");
+						return;
+					}
+					
+					signup.uniqueCheck = account;
+					JOptionPane.showMessageDialog(null, "중복 확인이 완료되었습니다.");
+				}
+			});
 
 			signup.SignupButton.addActionListener(new ActionListener() {
 
@@ -215,6 +235,11 @@ public class MainFrame extends JFrame implements ActionListener{
 					}
 
 					password = Encrypt.SHA256(password);
+					
+					if (!signup.uniqueCheck.equals(account)) {
+						JOptionPane.showMessageDialog(null, "중복 확인을 해주세요!");
+						return;
+					}
 
 					String accountSQL = String.format("INSERT INTO ACCOUNTS"
 							+ " (idx_a, grade, account, password, address, phone, point)"
