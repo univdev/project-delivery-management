@@ -1,6 +1,7 @@
 package com.delivery.java.layout;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.ResultSet;
@@ -42,6 +43,7 @@ public class OrderViewFrame extends JFrame {
 		this.setTitle(title);
 		this.setSize(d);
 		this.setLocationRelativeTo(null);
+		this.getContentPane().setBackground(new Color(49, 220, 215));
 		
 		db = new DB();
 		orders = new ArrayList<OrderSchema>();

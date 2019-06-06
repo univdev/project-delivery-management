@@ -35,6 +35,7 @@ public class AddingFoodFrame extends JFrame implements KeyListener, ActionListen
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(350, 270);
 		setLocation(1000, 250);
+		this.getContentPane().setBackground(new Color(49, 220, 215));
 
 		setLayout(null);
 

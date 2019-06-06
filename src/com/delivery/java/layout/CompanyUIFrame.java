@@ -72,6 +72,7 @@ public class CompanyUIFrame extends JFrame {
 		this.setTitle(title);
 		this.setSize(new Dimension(900, 560));
 		this.setLocationRelativeTo(null);
+		this.getContentPane().setBackground(new Color(49, 220, 215));
 		
 		db = new DB();
 		
