@@ -32,6 +32,7 @@ public class MainFrame extends JFrame implements ActionListener{
 	public JButton CustomerSignupButton;
 	public JLabel CompanySignuplabel;
 	public JButton CompanySignupButton;
+	public int DuplicationChecked;
 
 
 	public MainFrame(String title) {
@@ -183,6 +184,7 @@ public class MainFrame extends JFrame implements ActionListener{
 		else if(obj == CustomerSignupButton) {
 			this.setVisible(false);
 			CustomerSignupFrame signup = new CustomerSignupFrame("고객 회원가입");
+			DuplicationChecked = 0;	// 고객 회원가입 창을 띄울 때, 중복체크 관련 변수 초기화
 
 			signup.SignupButton.addActionListener(new ActionListener() {
 
@@ -204,6 +206,15 @@ public class MainFrame extends JFrame implements ActionListener{
 						JOptionPane.showMessageDialog(null, "아이디를 입력해주세요");
 						return;
 					}
+					
+					if (DuplicationChecked == 0) {
+						JOptionPane.showMessageDialog(null, "아이디 중복 확인을 해주세요.", "Message", JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+					if (password.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "비밀번호를 입력해주세요");
+						return;
+					}
 
 					if (!password.equals(passwordConfirm)) {
 						JOptionPane.showMessageDialog(null, "비밀번호를 다시 입력해주세요.");
@@ -216,18 +227,33 @@ public class MainFrame extends JFrame implements ActionListener{
 					}
 
 					password = Encrypt.SHA256(password);
-
-					String accountSQL = String.format("INSERT INTO ACCOUNTS"
+					
+					if (DuplicationChecked == 1) {
+						String accountSQL = String.format("INSERT INTO ACCOUNTS"
 							+ " (idx_a, grade, account, password, address, phone, point)"
 							+ " VALUES (sq_a.NEXTVAL, '%d', '%s', '%s', '%s', '%s', '%d')", grade, account, password, address, phone, point);
 
-					db.mq(accountSQL);
+						db.mq(accountSQL);
+					
+						String checkSQL = String.format("SELECT * FROM ACCOUNTS WHERE"
+								+ " GRADE='%d' AND ACCOUNT='%s' AND PASSWORD='%s' AND ADDRESS='%s'"
+								+ "  AND PHONE='%s' AND POINT='%d'", grade, account, password, address, phone, point);
 
-					JOptionPane.showMessageDialog(null, "가입이 완료되었습니다!");
+						int isComplete = db.mn(checkSQL);
 
-					signup.setVisible(false);
+						if (isComplete == 1) {	// 성공적으로 가입됐을 때
+							JOptionPane.showMessageDialog(null, "가입이 완료되었습니다!");
+							signup.setVisible(false);
+							setVisible(true);
+							return;
+						}
+						
+						else {
+							JOptionPane.showMessageDialog(null, "알 수 없는 이유로 가입에 실패하였습니다. 다시 시도해 주세요.", "Message", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
 
-					setVisible(true);
+					}
 				}
 			});
 			
@@ -237,6 +263,31 @@ public class MainFrame extends JFrame implements ActionListener{
 				public void actionPerformed(ActionEvent e) {
 					signup.setVisible(false);
 					setVisible(true);
+				}
+			});
+			
+			signup.DuplicationCheckButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					DB db = new DB();
+
+					String account = signup.IDTextField.getText();
+
+					String sql = String.format("SELECT * FROM ACCOUNTS WHERE ACCOUNT='%s'", account);
+					int isDuplicated = db.mn(sql);
+
+					if (isDuplicated == 1) {	// 중복된 ID일 경우
+						JOptionPane.showMessageDialog(null, "중복된 ID입니다. 다른 아이디를 입력해 주세요.", "중복확인", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					
+					else {
+						JOptionPane.showMessageDialog(null, "사용 가능한 ID입니다!", "중복확인", JOptionPane.INFORMATION_MESSAGE);
+						DuplicationChecked = 1;
+						return;
+					}
 				}
 			});
 		}

@@ -29,6 +29,7 @@ public class CustomerSignupFrame extends JFrame {
 	public JButton SignupButton;
 	public JButton BackButton;
 	public JTextField AddressTextField;
+	public JButton DuplicationCheckButton;
 	
 	public CustomerSignupFrame(String title) {
 		this.setTitle(title);
@@ -39,6 +40,7 @@ public class CustomerSignupFrame extends JFrame {
 		this.getContentPane().setBackground(new Color(49, 220, 215));
 		
 		label = new JLabel("고객 회원가입");
+		label.setForeground(Color.WHITE);
 		label.setFont(new Font("맑은 고딕",Font.BOLD,30));
 		label.setBounds(85, 30, 250, 35);
 		
@@ -48,7 +50,11 @@ public class CustomerSignupFrame extends JFrame {
 		
 		IDTextField = new JTextField();
 		IDTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		IDTextField.setBounds(30, 113, 300, 30);
+		IDTextField.setBounds(30, 113, 200, 30);
+		
+		DuplicationCheckButton = new JButton("중복확인");
+		DuplicationCheckButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		DuplicationCheckButton.setBounds(235, 113, 95, 30);
 		
 		PWlabel = new JLabel("비밀번호");
 		PWlabel.setFont(new Font("맑은 고딕",Font.PLAIN, 15));
@@ -114,6 +120,7 @@ public class CustomerSignupFrame extends JFrame {
 		add(AddressTextField);
 		add(SignupButton);
 		add(BackButton);
+		add(DuplicationCheckButton);
 		
 		this.setVisible(true);
 	}
