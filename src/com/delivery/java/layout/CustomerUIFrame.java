@@ -55,7 +55,7 @@ public class CustomerUIFrame extends JFrame {
 	
 	public CustomerUIFrame(String title) {
 		this.setTitle(title);
-		this.setSize(new Dimension(600, 500));
+		this.setSize(new Dimension(650, 500));
 		this.setLocationRelativeTo(null);
 		this.getContentPane().setBackground(new Color(49, 220, 215));
 		
@@ -174,6 +174,24 @@ public class CustomerUIFrame extends JFrame {
 			}
 		});
 		
+		JButton removeButton = new JButton("선택 취소");
+		removeButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int index = selectedFoodList.getSelectedIndex();
+				
+				if (index < 0) {
+					JOptionPane.showMessageDialog(null, "삭제할 메뉴를 선택해주세요!");
+					return;
+				}
+				
+				selectedFoodListModel.remove(index);
+				setPriceLabel(getPrice());
+			}
+		});
+		
 		JPanel leftPanel = new JPanel();
 		leftPanel.setLayout(new BorderLayout());
 		JLabel foodListLabel = new JLabel("음식 리스트");
@@ -196,6 +214,7 @@ public class CustomerUIFrame extends JFrame {
 		rightPanel.add(selectedFoodListLabel, BorderLayout.NORTH);
 		rightPanel.add(selectedFoodListPane, BorderLayout.CENTER);
 		buttonPanel.add(confirmButton);
+		buttonPanel.add(removeButton);
 		buttonPanel.add(orderCheckButton);
 		rightPanel.add(buttonPanel, BorderLayout.SOUTH);
 		
