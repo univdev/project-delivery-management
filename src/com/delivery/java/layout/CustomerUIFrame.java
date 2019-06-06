@@ -55,7 +55,7 @@ public class CustomerUIFrame extends JFrame {
 	
 	public CustomerUIFrame(String title) {
 		this.setTitle(title);
-		this.setSize(new Dimension(600, 500));
+		this.setSize(new Dimension(840, 500));
 		this.setLocationRelativeTo(null);
 		this.getContentPane().setBackground(new Color(49, 220, 215));
 		
@@ -87,8 +87,13 @@ public class CustomerUIFrame extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
+				int index = foodList.getSelectedIndex();
+				
+				if (index < 0) return;
+				
 				if (e.getValueIsAdjusting()) {
 					selectedFoodListModel.addElement(foodList.getSelectedValue());
+					foodList.clearSelection();
 					setPriceLabel(getPrice());
 				}
 			}
@@ -113,7 +118,7 @@ public class CustomerUIFrame extends JFrame {
 				// TODO Auto-generated method stub
 				ButtonModel model = paymentFrame.group.getSelection();
 				if (model == null) {
-					JOptionPane.showMessageDialog(null, "결제 수단을 입력해주세요.");
+					JOptionPane.showMessageDialog(null, "결제 수단을 선택해주세요.");
 					return;
 				}
 				DB db = new DB();
@@ -174,11 +179,40 @@ public class CustomerUIFrame extends JFrame {
 			}
 		});
 		
+		JButton removeButton = new JButton("선택 취소");
+		removeButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int index = selectedFoodList.getSelectedIndex();
+				
+				if (index < 0) {
+					JOptionPane.showMessageDialog(null, "삭제할 메뉴를 선택해주세요!");
+					return;
+				}
+				
+				selectedFoodListModel.remove(index);
+				setPriceLabel(getPrice());
+			}
+		});
+		
+		JButton allRemoveButton = new JButton("전체 취소");
+		allRemoveButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				selectedFoodListModel.removeAllElements();
+				setPriceLabel(getPrice());
+			}
+		});
+		
 		JPanel leftPanel = new JPanel();
 		leftPanel.setLayout(new BorderLayout());
 		JLabel foodListLabel = new JLabel("음식 리스트");
 		foodListLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-		foodListLabel.setHorizontalAlignment(JLabel.LEFT);
+		foodListLabel.setHorizontalAlignment(JLabel.CENTER);
 		leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		leftPanel.add(foodListLabel, BorderLayout.NORTH);
 		leftPanel.add(foodListPane, BorderLayout.CENTER);
@@ -190,12 +224,14 @@ public class CustomerUIFrame extends JFrame {
 		JPanel buttonPanel = new JPanel();
 		JLabel selectedFoodListLabel = new JLabel("선택 리스트");
 		selectedFoodListLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
-		selectedFoodListLabel.setHorizontalAlignment(JLabel.LEFT);
+		selectedFoodListLabel.setHorizontalAlignment(JLabel.CENTER);
 		
 		rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		rightPanel.add(selectedFoodListLabel, BorderLayout.NORTH);
 		rightPanel.add(selectedFoodListPane, BorderLayout.CENTER);
 		buttonPanel.add(confirmButton);
+		buttonPanel.add(removeButton);
+		buttonPanel.add(allRemoveButton);
 		buttonPanel.add(orderCheckButton);
 		rightPanel.add(buttonPanel, BorderLayout.SOUTH);
 		

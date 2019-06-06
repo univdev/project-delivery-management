@@ -30,9 +30,13 @@ public class CustomerSignupFrame extends JFrame {
 	public JButton BackButton;
 	public JTextField AddressTextField;
 	
+	public JButton uniqueCheckButton;
+
+	public String uniqueCheck = "";
+	
 	public CustomerSignupFrame(String title) {
 		this.setTitle(title);
-		this.setSize(374,660);
+		this.setSize(374,700);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
@@ -50,58 +54,62 @@ public class CustomerSignupFrame extends JFrame {
 		IDTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		IDTextField.setBounds(30, 113, 300, 30);
 		
+		uniqueCheckButton = new JButton("중복 확인");
+		uniqueCheckButton.setBounds(30, 153, 300, 30);
+		
 		PWlabel = new JLabel("비밀번호");
 		PWlabel.setFont(new Font("맑은 고딕",Font.PLAIN, 15));
-		PWlabel.setBounds(30, 155, 150, 35);
+		PWlabel.setBounds(30, 195, 150, 35);
 		
 		PWTextField = new JPasswordField();
 		PWTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		PWTextField.setBounds(30, 188, 300, 30);
+		PWTextField.setBounds(30, 228, 300, 30);
 		
 		PWRlabel = new JLabel("비밀번호 재확인");
 		PWRlabel.setFont(new Font("맑은 고딕",Font.PLAIN, 15));
-		PWRlabel.setBounds(30, 230, 150, 35);
+		PWRlabel.setBounds(30, 270, 150, 35);
 		
 		PWRTextField = new JPasswordField();
 		PWRTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		PWRTextField.setBounds(30, 263, 300, 30);
+		PWRTextField.setBounds(30, 303, 300, 30);
 		
 		Namelabel = new JLabel("이름");
 		Namelabel.setFont(new Font("맑은 고딕",Font.PLAIN, 15));
-		Namelabel.setBounds(30, 305, 150, 35);
+		Namelabel.setBounds(30, 345, 150, 35);
 		
 		NameTextField = new JTextField();
 		NameTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		NameTextField.setBounds(30, 338, 300, 30);
+		NameTextField.setBounds(30, 378, 300, 30);
 		
 		PhoneNumburlabel = new JLabel("휴대전화");
 		PhoneNumburlabel.setFont(new Font("맑은 고딕",Font.PLAIN, 15));
-		PhoneNumburlabel.setBounds(30, 380, 150, 35);
+		PhoneNumburlabel.setBounds(30, 420, 150, 35);
 		
 		PhoneNumburTextField = new JTextField();
 		PhoneNumburTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		PhoneNumburTextField.setBounds(30, 413, 300, 30);
+		PhoneNumburTextField.setBounds(30, 453, 300, 30);
 		
 		Addresslabel = new JLabel("주소");
 		Addresslabel.setFont(new Font("맑은 고딕",Font.PLAIN, 15));
-		Addresslabel.setBounds(30, 455, 150, 35);
+		Addresslabel.setBounds(30, 495, 150, 35);
 		
 		AddressTextField = new JTextField();
 		AddressTextField.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		AddressTextField.setBounds(30, 488, 300, 30);
+		AddressTextField.setBounds(30, 528, 300, 30);
 		
 		SignupButton = new JButton("가입하기");
 		SignupButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		SignupButton.setBounds(30, 555, 140, 35);
+		SignupButton.setBounds(30, 595, 140, 35);
 		
 		BackButton = new JButton("뒤로가기");
 		BackButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		BackButton.setBounds(190, 555, 140, 35);
+		BackButton.setBounds(190, 595, 140, 35);
 		
 		
 		add(label);
 		add(IDlabel);
 		add(IDTextField);
+		add(uniqueCheckButton);
 		add(PWlabel);
 		add(PWTextField);
 		add(PWRlabel);
