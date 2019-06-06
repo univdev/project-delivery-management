@@ -87,8 +87,10 @@ public class CustomerUIFrame extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
-				selectedFoodListModel.addElement(foodList.getSelectedValue());
-				setPriceLabel(getPrice());
+				if (e.getValueIsAdjusting()) {
+					selectedFoodListModel.addElement(foodList.getSelectedValue());
+					setPriceLabel(getPrice());
+				}
 			}
 		});
 		
@@ -232,6 +234,7 @@ public class CustomerUIFrame extends JFrame {
 	
 	private void setPriceLabel(int price) {
 		priceLabel.setText(String.format("총 금액: %d원", price));
+		priceLabel.setFont(new Font("맑은 고딕", Font.BOLD, 24));
 	}
 	
 	private int getPrice() {
