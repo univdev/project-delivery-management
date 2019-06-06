@@ -1,7 +1,9 @@
 package com.delivery.java.layout;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,12 +44,14 @@ public class StoreListFrame extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(250,400);
 		setLocation(400,300);
+		this.getContentPane().setBackground(new Color(49, 220, 215));
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panel.setLayout(new BorderLayout());
 		
 		JLabel label = new JLabel("업소 목록");
+		label.setFont(new Font("맑은 고딕", Font.PLAIN, 24));
 		label.setHorizontalAlignment(JLabel.CENTER);
 		
 		JPanel titlePanel = new JPanel();

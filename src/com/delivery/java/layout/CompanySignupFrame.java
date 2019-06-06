@@ -1,5 +1,6 @@
 package com.delivery.java.layout;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -50,10 +51,12 @@ public class CompanySignupFrame extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
+		this.getContentPane().setBackground(new Color(49, 220, 215));
 		
-		label = new JLabel("사장 회원가입");
-		label.setFont(new Font("맑은 고딕",Font.BOLD,30));
-		label.setBounds(85, 30, 250, 35);
+		label = new JLabel("사장님 회원가입");
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font("맑은 고딕", Font.BOLD, 30));
+		label.setBounds(65, 30, 250, 35);
 		
 		IDlabel = new JLabel("아이디");
 		IDlabel.setFont(new Font("맑은 고딕",Font.PLAIN, 15));
@@ -119,21 +122,25 @@ public class CompanySignupFrame extends JFrame{
 		Cash.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		Cash.setBounds(30, 638, 100, 35);
 		Cash.setActionCommand("Cash");
+		Cash.setBackground(new Color(49, 220, 215));
 		
 		Card = new JCheckBox("카드");
 		Card.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		Card.setBounds(180, 638, 100, 35);
 		Card.setActionCommand("Card");
+		Card.setBackground(new Color(49, 220, 215));
 		
 		Point = new JCheckBox("포인트");
 		Point.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		Point.setBounds(30, 671, 100, 35);
 		Point.setActionCommand("Point");
+		Point.setBackground(new Color(49, 220, 215));
 		
 		Kakao = new JCheckBox("카카오페이");
 		Kakao.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		Kakao.setBounds(180, 671, 110, 35);
 		Kakao.setActionCommand("Kakao");
+		Kakao.setBackground(new Color(49, 220, 215));
 		
 		SignupButton = new JButton("가입하기");
 		SignupButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));

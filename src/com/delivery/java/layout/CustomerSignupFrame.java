@@ -1,5 +1,6 @@
 package com.delivery.java.layout;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -35,6 +36,7 @@ public class CustomerSignupFrame extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
+		this.getContentPane().setBackground(new Color(49, 220, 215));
 		
 		label = new JLabel("고객 회원가입");
 		label.setFont(new Font("맑은 고딕",Font.BOLD,30));

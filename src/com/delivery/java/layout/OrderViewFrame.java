@@ -1,8 +1,11 @@
 package com.delivery.java.layout;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -12,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -42,6 +46,7 @@ public class OrderViewFrame extends JFrame {
 		this.setTitle(title);
 		this.setSize(d);
 		this.setLocationRelativeTo(null);
+		this.getContentPane().setBackground(new Color(49, 220, 215));
 		
 		db = new DB();
 		orders = new ArrayList<OrderSchema>();
@@ -80,6 +85,30 @@ public class OrderViewFrame extends JFrame {
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		
 		cancelButton = new JButton("취소");
+		cancelButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int index = table.getSelectedRow();
+				String idx_o = tableModel.getValueAt(index, 0).toString();
+				String status = tableModel.getValueAt(index, 3).toString();
+				
+				if (!status.equals("배송 전")) {
+					JOptionPane.showMessageDialog(null, "배송 전인 상품만 취소하실 수 있습니다.");
+					return;
+				}
+				
+				String sql = String.format("DELETE FROM orders WHERE idx_o='%s'", idx_o);
+				
+				db.mfs(sql);
+				
+				JOptionPane.showMessageDialog(null, "상품을 취소했습니다.");
+				
+				tableModel.removeRow(index);
+			}
+		});
+		
 		returnButton = new JButton("목록");
 		buttonPanel.add(cancelButton);
 		buttonPanel.add(returnButton);

@@ -72,6 +72,7 @@ public class CompanyUIFrame extends JFrame {
 		this.setTitle(title);
 		this.setSize(new Dimension(900, 560));
 		this.setLocationRelativeTo(null);
+		this.getContentPane().setBackground(new Color(49, 220, 215));
 		
 		db = new DB();
 		
@@ -150,6 +151,7 @@ public class CompanyUIFrame extends JFrame {
 		JPanel leftPanel = new JPanel();
 		JPanel foodListLabelPanel = new JPanel();
 		JLabel foodListLabel = new JLabel("음식 리스트");
+		foodListLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
 		foodListLabelPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		foodListLabelPanel.add(foodListLabel);
 		foodListLabel.setHorizontalAlignment(JLabel.LEFT);
@@ -162,6 +164,7 @@ public class CompanyUIFrame extends JFrame {
 		JPanel rightPanel = new JPanel();
 		JPanel selectedFoodLabelPanel = new JPanel();
 		JLabel selectedFoodListLabel = new JLabel("주문 리스트");
+		selectedFoodListLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
 		selectedFoodLabelPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		selectedFoodLabelPanel.add(selectedFoodListLabel);
 		selectedFoodListLabel.setHorizontalAlignment(JLabel.LEFT);
@@ -216,7 +219,6 @@ public class CompanyUIFrame extends JFrame {
 				}
 				
 				Date today = new Date();
-				Timestamp current = new Timestamp(today.getTime());
 				String idx_o = tableModel.getValueAt(index, 0).toString();
 				int duration = durationCombobox.getItemAt(durationCombobox.getSelectedIndex());
 				
