@@ -17,7 +17,7 @@ public class LoginFrame extends JFrame {
 	public JTextField LoginTextField;
 	public JPasswordField PasswordTextField;
 	public JButton LoginButton;
-	public JButton SignupButton;
+	public JButton BackButton;
 	public JLabel IDlabel;
 	public JLabel PWlabel;
 	
@@ -28,7 +28,7 @@ public class LoginFrame extends JFrame {
 	
 	public LoginFrame(String title) {
 		this.setTitle(title);
-		this.setSize(400,350);
+		this.setSize(374,350);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
@@ -54,8 +54,12 @@ public class LoginFrame extends JFrame {
 		PasswordTextField.setBounds(30, 185, 300, 30);
 		
 		LoginButton = new JButton("로그인");
-		LoginButton.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+		LoginButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
 		LoginButton.setBounds(30, 250, 140, 35);
+		
+		BackButton = new JButton("뒤로가기");
+		BackButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		BackButton.setBounds(190, 250, 140, 35);
 		
 		add(label);
 		add(IDlabel);
@@ -63,7 +67,7 @@ public class LoginFrame extends JFrame {
 		add(PWlabel);
 		add(PasswordTextField);
 		add(LoginButton);
-		
+		add(BackButton);
 		
 		this.setVisible(true);
 	}

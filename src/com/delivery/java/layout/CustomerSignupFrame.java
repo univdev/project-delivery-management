@@ -26,18 +26,19 @@ public class CustomerSignupFrame extends JFrame {
 	public JTextField NameTextField;
 	public JTextField PhoneNumburTextField;
 	public JButton SignupButton;
+	public JButton BackButton;
 	public JTextField AddressTextField;
 	
 	public CustomerSignupFrame(String title) {
 		this.setTitle(title);
-		this.setSize(400,650);
+		this.setSize(374,660);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(null);
 		
 		label = new JLabel("고객 회원가입");
 		label.setFont(new Font("맑은 고딕",Font.BOLD,30));
-		label.setBounds(95, 30, 250, 35);
+		label.setBounds(85, 30, 250, 35);
 		
 		IDlabel = new JLabel("아이디");
 		IDlabel.setFont(new Font("맑은 고딕",Font.PLAIN, 15));
@@ -89,7 +90,11 @@ public class CustomerSignupFrame extends JFrame {
 		
 		SignupButton = new JButton("가입하기");
 		SignupButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
-		SignupButton.setBounds(30, 555, 150, 35);
+		SignupButton.setBounds(30, 555, 140, 35);
+		
+		BackButton = new JButton("뒤로가기");
+		BackButton.setFont(new Font("맑은 고딕", Font.PLAIN, 15));
+		BackButton.setBounds(190, 555, 140, 35);
 		
 		
 		add(label);
@@ -106,6 +111,7 @@ public class CustomerSignupFrame extends JFrame {
 		add(Addresslabel);
 		add(AddressTextField);
 		add(SignupButton);
+		add(BackButton);
 		
 		this.setVisible(true);
 	}
